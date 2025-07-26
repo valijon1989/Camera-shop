@@ -21,3 +21,21 @@
     content: "";
     border-bottom: solid 2px #d7b686;
 }
+
+.home-navbar .hover-line:hover:after {
+    display: block;
+    content: "";
+    border-bottom: solid 2px #d7b686;
+    transform: scale(0);
+    transition: transform 250ms ease-in-out;
+}
+
+.home-navbar .hover-line:hover:after {
+    transform: scaleX(1);
+}
+
+.home-navbar div.hover-line:after {
+    transform-origin: 0% 50%;
+}
+
+
