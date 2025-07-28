@@ -251,3 +251,88 @@ cursor: pointer;
   transform: scale(1.5);
   overflow: hidden;
 }
+
+
+
+/** ACTIVE USERS **/
+
+.homepage .active-users-frame {
+  width: 100%;
+  height: 550px;
+  background: #f8f8ff;
+  display: flex;
+}
+
+.homepage .active-users-frame .main {
+  margin-top: 45px;
+  width: 1300px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.homepage .active-users-frame .category-title {
+/* Title */
+  margin-top: 93.28px;
+  width: 214px;
+  height: 31.71px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+font-family: Roboto Serif;
+font-size: 36px;
+font-weight: 600;
+line-height: 42px;
+color: rgb(52, 52, 52);
+}
+
+
+.homepage .active-users-frame .main .cards-frame {
+  /* Users */
+  width: 1262px;
+  height: 273px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+.homepage .active-users-frame .main .card {
+    /* User */
+    margin-top: 56.63px;
+    height: 344px;
+    width: 302.26px;
+    cursor: pointer;
+}
+
+.homepage .active-users-frame .member-nickname {
+    width: 100%;
+    height: 26.76px;
+    display: flex;
+flex-direction: row;
+align-items: center;
+font-family: Roboto Serif;
+font-size: 12px;
+font-weight: 600;
+line-height: 14px;
+letter-spacing: 0%;
+text-align: center;
+color: rgb(0, 0, 0);
+}
+
+.homepage .cards-frame .no-data {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: capitalize;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 34px;
+  color: #e3c08d;
+}
