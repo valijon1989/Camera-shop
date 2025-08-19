@@ -23,16 +23,16 @@ class Test extends Component {
     };
 
 componentDidMount() {
-        console.log("Component mounted with initial state:", this.state);
+        console.log("Component mounted with initial state:");
     }
 // nega foydalanamiz : backendan malumot olish uchun --> retrive data  qilib olamiz va qabul qilingan datani state ga saqlaymiz
     componentWillUnmount() {
-        console.log("Component will unmount. Current state:", this.state);   
+        console.log("Component will unmount. Current state:");   
     }
       //   componentWillUnmount esa yashirishdan oldin ishlaydi, bu yerda biz komponentni o'chirishdan oldin bajarilishi kerak bo'lgan kodlarni yozamiz.
   
       componentDidUpdate() {
-        console.log("Component updated. New state:", this.state);
+        console.log("Component updated. New state:");
     }
   // componentDidUpdate esa komponent yangilanganidan so'ng ishlaydi, bu yerda biz yangilangan holatni ko'rishimiz mumkin.
 
