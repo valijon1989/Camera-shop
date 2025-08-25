@@ -32,6 +32,7 @@ export default function HomePage() {
   const { popularDishes } = useSelector(popularDishesRetriver);
      // Selector: Redux Store ==> Data
 
+
   useEffect(() => {}, []);
 
     // Slice: Redux Store ==> Component
