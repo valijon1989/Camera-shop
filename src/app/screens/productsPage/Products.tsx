@@ -15,6 +15,9 @@ import { setProducts } from "./slice";
 import { Product } from "../../../lib/types/product";
 import { createSelector } from "reselect";
 import { retrieveProducts } from "./selector";
+import ProductService from "../../services/ProductService";
+import { ProductCollection } from "../../../lib/enums/product.enum";
+import { serverApi } from "../../../lib/config";
 
 
 /** REDUX SKICE & SELECTOR */
@@ -23,23 +26,31 @@ const actionDispatch = (dispatch: Dispatch) => ({
 });
 const productsRetriever = createSelector(retrieveProducts,(products) => ({
    products,
-
    }));
 
 
-
-const products = [
-  { productName: "Cutlet", ImagePath: "/img/cutlet.webp" },
-  { productName: "Kebab", ImagePath: "/img/kebab-fresh.webp" },
-  { productName: "Kebab", ImagePath: "/img/kebab.webp" },
-  { productName: "Lavash", ImagePath: "/img/lavash.webp" },
-  { productName: "Lavash", ImagePath: "/img/lavash.webp" },
-  { productName: "Cutlet", ImagePath: "/img/cutlet.webp" },
-  { productName: "Kebab", ImagePath: "/img/kebab.webp" },
-  { productName: "Kebab", ImagePath: "/img/kebab-fresh.webp" },
-];
-
 export default function Products() {
+  const { setProducts } = actionDispatch(useDispatch());
+  const { products } = useSelector(productsRetriever);
+
+    useEffect(() => {
+      const product = new ProductService();
+      product
+        .getProducts({
+          page: 1,
+          limit: 8,
+          order: "createdAt",
+          productCollection: ProductCollection.DISH,
+          search: "",
+        })
+        .then((data) => {
+          console.log("data passed here:", data);
+          setProducts(data);
+        })
+        .catch((err) => console.log(err));
+    }, []);
+
+
   return (
     <div className="products">
       <Container>
@@ -95,16 +106,21 @@ export default function Products() {
                 justifyContent="center"
               >
                 {products.length !== 0 ? (
-                  products.map((product, index) => {
+                  products.map((product: Product) => {
+                    const ImagePath = `${serverApi}/${product.productImages[0]}`;
+                    const sizeVolume = 
+                      product.productCollection === ProductCollection.DRINK
+                        ? product.productVolume + "litre"
+                        : product.productSize + "size";
                     return (
-                      <Stack key={index} className={"product-card"}>
+                      <Stack key={product._id} className={"product-card"}>
                         <Stack
                           className="product-img"
                           sx={{
-                            backgroundImage: `url(${product.ImagePath})`,
+                            backgroundImage: `url(${ImagePath})`,
                           }}
                         >
-                          <div className={"product-sale"}>Normal size</div>
+                          <div className={"product-sale"}>{sizeVolume}</div>
                           <Button className="shop-btn">
                             <img
                               src="/icons/shopping-cart.svg"
@@ -121,10 +137,11 @@ export default function Products() {
                               padding: "6px",
                             }}
                           >
-                            <Badge badgeContent={20} color="secondary">
+                            <Badge badgeContent={product.productViews} color="secondary">
                               <RemoveRedEyeIcon
                                 sx={{
-                                  color: 20 ? "gray" : "white",
+                                  color: 
+                                  product.productViews ===0 ? "gray" : "white",
                                 }}
                               />
                             </Badge>
@@ -137,7 +154,7 @@ export default function Products() {
                           </span>
                           <div className={"product-desc-icon"}>
                             <MonetizationOnIcon />
-                            {15}
+                            {product.productPrice}
                           </div>
                         </Box>
                       </Stack>
