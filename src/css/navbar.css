@@ -203,13 +203,13 @@ color: #f8f8ff;
     color: #f8f8ff;
 }
 
-.other-navbar.navbar-container .menu .links .user-avatar {
+.other-navbar .navbar-container .menu .links .user-avatar {
     width: 50px;
     height: 50px;
     border-radius: 24px;
 }
 
-.other-navbara {
+.other-navbar a {
     text-decoration: none;
 }
 

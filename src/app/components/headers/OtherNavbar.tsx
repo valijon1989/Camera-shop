@@ -48,7 +48,9 @@ export default function OtherNavbar(props: OtherNavbarProps) {
           </Box>
           <Stack className="links">
             <Box className="hover-line">
-              <NavLink to="/">Home</NavLink>
+              <NavLink to="/">
+              Home
+              </NavLink>
             </Box>
             <Box className="hover-line">
               <NavLink to="/products" activeClassName={"underline"}>
@@ -87,8 +89,8 @@ export default function OtherNavbar(props: OtherNavbarProps) {
           {!authMember ? (
             <Box>
               <Button
-                variant="contained"
                 className="login-button"
+                variant="contained"
                 onClick={() => setLoginOpen(true)}
               >
                 Login
