@@ -22,6 +22,8 @@ export interface OrderItem {
 }
 
 export interface Order {
+  productData: any;
+  orderItems: any;
   _id: string;
   orderTotal: number;
   orderDelivery: number;

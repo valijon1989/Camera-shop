@@ -10,6 +10,7 @@ class MemberService {
         this.path = serverApi;
      }
 
+
      public async getTopUsers(): Promise<Member[]> {
         try {
             const url = this.path + "/member/top-users";
