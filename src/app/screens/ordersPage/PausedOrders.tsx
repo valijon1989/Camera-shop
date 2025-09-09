@@ -24,7 +24,10 @@ const pausedOrdersRetriever = createSelector(
  
 export default function PausedOrders() {
     const { pausedOrders } = useSelector(pausedOrdersRetriever);
-    
+
+
+
+
 return (
 <TabPanel value={"1"}>
 <Stack>
@@ -36,9 +39,7 @@ return (
     const product: Product = order.productData.filter(
         (ele: Product) => item.productId === ele._id
     )[0];
-const imagePath = `${serverApi}/${product.productImages[0]}`;
-
-    
+const imagePath = `${serverApi}/${product.productImages[0]}`; 
 return (
 <Box key={item._id} className={"order-name-price"}>
 <img
@@ -97,10 +98,10 @@ Payment
    flexDirection={"row"} 
    justifyContent={"center"}>
    <img
-src={"/icons/noimage-list.svg"}
-style={{ width: 300, height: 300 }}
+      src={"/icons/noimage-list.svg"}
+      style={{ width: 300, height: 300 }}
    />
-</Box>
+  </Box>
   ))}
   </Stack>
   </TabPanel>
