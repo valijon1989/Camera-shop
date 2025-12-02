@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import Button from "@mui/material/Button";
 import { useGlobals } from "../../hooks/useGlobals";
-import { Messages, serverApi } from "../../../lib/config";
+import { Messages, getMediaUrl } from "../../../lib/config";
 import { useState } from "react";
 import { MemberUpdateInput } from "../../../lib/types/member";
 import { T } from "../../../lib/types/common";
@@ -14,19 +14,18 @@ import MemberService from "../../services/MemberService";
 
 export function Settings() {
   const { authMember, setAuthMember } = useGlobals();
-  const [memberImage, setMemberImage] = useState<string>(
-    authMember?.memberImage
-      ? `${serverApi}/${authMember?.memberImage}`
-      : "/icons/default-user.svg"
-  );
+  const [memberImage, setMemberImage] = useState<string>(() => {
+    const resolved = getMediaUrl(authMember?.memberImage);
+    return resolved || "/icons/default-user.svg";
+  });
 
   const [memberUpdateInput, setMemberUpdateInput] = useState<MemberUpdateInput>(
     {
-      memberNick: authMember?.memberNick,
-      memberPhone: authMember?.memberPhone,
-      memberImage: authMember?.memberImage,
-      memberAddress: authMember?.memberAddress,
-      memberDesc: authMember?.memberDesc,
+      memberNick: authMember?.memberNick || "",
+      memberPhone: authMember?.memberPhone || "",
+      memberImage: authMember?.memberImage || "",
+      memberAddress: authMember?.memberAddress || "",
+      memberDesc: authMember?.memberDesc || "",
     }
   );
 
@@ -113,7 +112,7 @@ export function Settings() {
             type="text"
             placeholder={authMember?.memberNick}
             name="memberNick"
-            value={memberUpdateInput.memberNick}
+            value={memberUpdateInput.memberNick || ""}
             onChange={memberNickHandler}
           />
         </div>
@@ -126,7 +125,7 @@ export function Settings() {
             type="text"
             placeholder={authMember?.memberPhone ?? "No phone"}
             name="memberPhone"
-            value={memberUpdateInput.memberPhone}
+            value={memberUpdateInput.memberPhone || ""}
             onChange={memberPhoneHandler}
           />
         </div>
@@ -137,7 +136,7 @@ export function Settings() {
             type="text"
             placeholder={authMember?.memberAddress ?? "No address"}
             name="memberAddress"
-            value={memberUpdateInput.memberAddress}
+            value={memberUpdateInput.memberAddress || ""}
             onChange={memberAddressHandler}
           />
         </div>
@@ -149,7 +148,7 @@ export function Settings() {
             className={"spec-textarea mb-description"}
             placeholder={authMember?.memberDesc ?? "No description"}
             name="memberDesc"
-            value={memberUpdateInput.memberDesc}
+            value={memberUpdateInput.memberDesc || ""}
             onChange={memberDescHandler}
           />
         </div>

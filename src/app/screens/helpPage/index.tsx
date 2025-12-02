@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Container, Stack, Tabs } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Tab from "@mui/material/Tab";
@@ -12,13 +12,36 @@ import TabPanel from "@mui/lab/TabPanel";
 import "../../../css/help.css";
 import { faq } from "../../../lib/data/faq";
 import { terms } from "../../../lib/data/terms";
+import axios from "axios";
 
 export default function HelpPage() {
   const [value, setValue] = React.useState("1");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    phone: "",
+    message: "",
+  });
 
   /** HANDLERS **/
   const handleChange = (e: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    axios
+      .post("http://localhost:9090/api/help", formData)
+      .then((res) => {
+        console.log("Help sent:", res.data);
+        alert("Your message has been sent!");
+      })
+      .catch((err) => {
+        console.error("Help error:", err);
+        alert("Failed to send message");
+      });
   };
 
   return (
@@ -77,32 +100,64 @@ export default function HelpPage() {
                       <span>Contact us!</span>
                       <p>Fill out below form to send a message!</p>
                     </Box>
-                    <form
-                      action={"#"}
-                      method={"POST"}
-                      className={"admin-letter-frame"}
-                    >
+                    <form onSubmit={handleSubmit} className={"admin-letter-frame"}>
                       <div className={"admin-input-box"}>
                         <label>Your name</label>
                         <input
                           type={"text"}
-                          name={"memberNick"}
+                          name={"name"}
                           placeholder={"Type your name here"}
+                          value={formData.name}
+                          onChange={(e) =>
+                            setFormData({ ...formData, [e.target.name]: e.target.value })
+                          }
                         />
                       </div>
                       <div className={"admin-input-box"}>
                         <label>Your email</label>
                         <input
                           type={"text"}
-                          name={"memberEmail"}
+                          name={"email"}
                           placeholder={"Type your email here"}
+                          value={formData.email}
+                          onChange={(e) =>
+                            setFormData({ ...formData, [e.target.name]: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className={"admin-input-box"}>
+                        <label>Subject</label>
+                        <input
+                          type={"text"}
+                          name={"subject"}
+                          placeholder={"Topic"}
+                          value={formData.subject}
+                          onChange={(e) =>
+                            setFormData({ ...formData, [e.target.name]: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className={"admin-input-box"}>
+                        <label>Phone</label>
+                        <input
+                          type={"text"}
+                          name={"phone"}
+                          placeholder={"Type your phone here"}
+                          value={formData.phone}
+                          onChange={(e) =>
+                            setFormData({ ...formData, [e.target.name]: e.target.value })
+                          }
                         />
                       </div>
                       <div className={"admin-input-box"}>
                         <label>Message</label>
                         <textarea
-                          name={"memberMsg"}
+                          name={"message"}
                           placeholder={"Your message"}
+                          value={formData.message}
+                          onChange={(e) =>
+                            setFormData({ ...formData, [e.target.name]: e.target.value })
+                          }
                         ></textarea>
                       </div>
                       <Box

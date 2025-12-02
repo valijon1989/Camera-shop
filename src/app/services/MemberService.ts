@@ -1,5 +1,4 @@
-import axios from "axios";
-import { serverApi } from "../../lib/config";
+import axios from "../../api/axios";
 import {
   LoginInput,
   Member,
@@ -11,15 +10,18 @@ class MemberService {
   private readonly path: string;
 
   constructor() {
-    this.path = serverApi;
+    this.path = ""; // axios baseURL handles host
   }
 
-  public async getTopUsers(): Promise<[]> {
+  public async getTopUsers(): Promise<Member[]> {
     try {
-      let url = this.path + "/member/top-users";
+      let url = this.path + "member/top-users";
       const result = await axios.get(url);
-      console.log("result, result", result);
-      return result.data;
+      const payload = Array.isArray((result.data as any)?.data)
+        ? (result.data as any).data
+        : result.data;
+      console.log("result, result", payload);
+      return payload as Member[];
     } catch (err) {
       console.log("Error, getTopUsers", err);
       throw err;
@@ -28,26 +30,33 @@ class MemberService {
 
   public async getRestaurant(): Promise<Member> {
     try {
-      let url = this.path + "/member/restaurant";
-      const result = await axios.get(url);
+      const adminUrl = this.path + "member/admin";
+      const result = await axios.get(adminUrl);
       console.log("result", result);
 
-      const restaurant: Member = result.data;
-      return restaurant;
+      const platformAdmin: Member = result.data;
+      return platformAdmin;
     } catch (err) {
-      console.log("Error, getRestaurant", err);
-      throw err;
+      console.log("Error, getRestaurant primary endpoint", err);
+      try {
+        const legacyUrl = this.path + "member/restaurant";
+        const legacyResult = await axios.get(legacyUrl);
+        const platformAdmin: Member = legacyResult.data;
+        return platformAdmin;
+      } catch (legacyErr) {
+        console.log("Error, getRestaurant legacy fallback", legacyErr);
+        throw legacyErr;
+      }
     }
   }
 
   public async signup(input: MemberInput): Promise<Member> {
     try {
-      const url = this.path + "/member/signup";
+      const url = this.path + "member/signup";
       const result = await axios.post(url, input, { withCredentials: true });
-      console.log("result.data signup", result);
+      const member: Member = (result.data as any)?.member ?? result.data;
+      console.log("result.data signup", member);
 
-      const member: Member = result.data.member;
-      console.log(" member", member);
       localStorage.setItem("memberData", JSON.stringify(member));
 
       return member;
@@ -59,12 +68,11 @@ class MemberService {
 
   public async login(input: LoginInput): Promise<Member> {
     try {
-      const url = this.path + "/member/login";
+      const url = this.path + "member/login";
       const result = await axios.post(url, input, { withCredentials: true });
-      console.log("login.login login", result);
+      const member: Member = (result.data as any)?.member ?? result.data;
+      console.log("login.login login", member);
 
-      const member: Member = result.data.member;
-      console.log(" member", member);
       localStorage.setItem("memberData", JSON.stringify(member));
 
       return member;
@@ -76,7 +84,7 @@ class MemberService {
 
   public async logout(): Promise<void> {
     try {
-      const url = this.path + "/member/logout";
+      const url = this.path + "member/logout";
       const result = await axios.post(url, {}, { withCredentials: true });
       console.log("logout.logout", result);
 
@@ -96,9 +104,9 @@ class MemberService {
       formData.append("memberDesc", input.memberDesc || "");
       formData.append("memberImage", input.memberImage || "");
 
-      const url = this.path + "/member/update";
+      const url = this.path + "member/update";
 
-      const result = await axios(`${serverApi}/member/update`, {
+      const result = await axios(url, {
         method: "POST",
         data: formData,
         withCredentials: true,

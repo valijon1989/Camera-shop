@@ -1,25 +1,43 @@
-import { ProductCollection, ProductSize, ProductStatus } from "../enums/product.enum";
-
 export interface Product {
   _id: string;
-  productStatus: ProductStatus;
-  productCollection: ProductCollection;
-  productName: string;
-  productPrice: number;
-  productLeftCount: number;
-  productSize: ProductSize;
-  productVolume: number;
-  productDesc?: string;
-  productImages: string[];
-  productViews: number;
-  createdAt: Date;
-  updatedAt: Date;
+  cameraModel: string;
+  brand: string;
+  sensorType?: string;
+  resolutionMp?: number;
+  mountType?: string;
+  category?: string; // dslr, mirrorless, lens, cinema, drone, accessory, other
+  price: number;
+  stock?: number;
+  description?: string;
+  images: string[];
+  condition?: string;
+  location?: string;
+  views?: number;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ProductCreate {
+  cameraModel: string;
+  brand: string;
+  sensorType?: string;
+  resolutionMp?: number;
+  mountType?: string;
+  category?: string;
+  price: number;
+  stock?: number;
+  description?: string;
+  images: string[];
+  condition?: string;
+  location?: string;
 }
 
 export interface ProductInquiry {
-  order: string;
-  page: number;
-  limit: number;
-  productCollection?: ProductCollection;
+  order?: string;
+  page?: number;
+  limit?: number;
   search?: string;
+  category?: string;
+  brand?: string;
 }

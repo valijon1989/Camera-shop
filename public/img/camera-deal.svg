@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">Camera Deal</title>
+  <desc id="desc">Promo artwork for camera bundle deals.</desc>
+  <defs>
+    <linearGradient id="deal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1f33"/>
+      <stop offset="100%" stop-color="#2f7cff"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="400" rx="28" fill="url(#deal)"/>
+  <rect x="90" y="120" width="220" height="140" rx="24" fill="#0a1726" stroke="#e9f3ff" stroke-width="8"/>
+  <circle cx="200" cy="190" r="54" fill="#2f7cff" stroke="#b7d8ff" stroke-width="10"/>
+  <rect x="120" y="100" width="80" height="28" rx="10" fill="#89cff0" opacity="0.88"/>
+  <rect x="360" y="130" width="180" height="120" rx="22" fill="#0a1726" stroke="#b7d8ff" stroke-width="6" opacity="0.9"/>
+  <rect x="380" y="150" width="140" height="80" rx="18" fill="#2f7cff" opacity="0.6"/>
+  <text x="80" y="330" font-family="Arial, Helvetica, sans-serif" font-size="42" fill="#e9f3ff" font-weight="700">Launch Week Deals</text>
+  <text x="80" y="360" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#d6e8ff">Admin-approved bundles · Cameras · Lenses · Kits</text>
+</svg>

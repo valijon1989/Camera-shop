@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" role="img" aria-labelledby="title desc">
+  <title id="title">All Camera World Logo Graphic</title>
+  <desc id="desc">Large illustrative camera mark for the hero section.</desc>
+  <defs>
+    <linearGradient id="body" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b2440"/>
+      <stop offset="50%" stop-color="#123d64"/>
+      <stop offset="100%" stop-color="#0b1f33"/>
+    </linearGradient>
+    <linearGradient id="lensRing" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2f7cff"/>
+      <stop offset="100%" stop-color="#89cff0"/>
+    </linearGradient>
+  </defs>
+  <rect x="80" y="120" width="740" height="320" rx="48" fill="url(#body)" stroke="#2f7cff" stroke-width="8"/>
+  <rect x="152" y="96" width="160" height="60" rx="18" fill="#2f7cff" opacity="0.85"/>
+  <circle cx="450" cy="280" r="150" fill="none" stroke="url(#lensRing)" stroke-width="28"/>
+  <circle cx="450" cy="280" r="92" fill="#0a1726" stroke="#cbe3ff" stroke-width="10"/>
+  <circle cx="450" cy="280" r="48" fill="#2f7cff" opacity="0.8"/>
+  <path d="M650 200h76c18 0 32 14 32 32v76" fill="none" stroke="#89cff0" stroke-width="12" stroke-linecap="round" opacity="0.5"/>
+  <rect x="210" y="220" width="60" height="40" rx="10" fill="#89cff0" opacity="0.65"/>
+  <text x="140" y="430" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700" fill="#e9f3ff">All Camera World</text>
+  <text x="140" y="470" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#b7d8ff">Camera, drone, and lens marketplace with admin + agents</text>
+</svg>

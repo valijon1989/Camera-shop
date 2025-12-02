@@ -11,24 +11,18 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch }  from "@reduxjs/toolkit";
 import { setRestaurant, setChosenProduct } from "./slice";
-import { Product } from "../../../lib/types/product";
+import { Product } from "../../services/types/product";
 import { createSelector } from "reselect";
 import { retrieveChosenProduct, retrieveRestaurant } from "./selector";
 import { useParams } from "react-router-dom";
 import ProductService from "../../services/ProductService";
 import MemberService from "../../services/MemberService";
-import { Member } from "../../../lib/types/member";
-import { serverApi } from "../../../lib/config";
+import { getMediaUrl, mediaApi } from "../../../lib/config";
 import { CartItem } from "../../../lib/types/search";
 
 
 /** REDUX SKICE & SELECTOR */
-const actionDispatch = (dispatch: Dispatch) => ({
-    setRestaurant: (data: Member) => dispatch(setRestaurant(data)),
-    setChosenProduct: (data: Product) => dispatch(setChosenProduct(data)),
-});
 const chosenProductRetriever = createSelector(retrieveChosenProduct,(chosenProduct) => ({
    chosenProduct,
    }));
@@ -47,28 +41,33 @@ const chosenProductRetriever = createSelector(retrieveChosenProduct,(chosenProdu
 export default function ChosenProduct(props: ChosenProductProps) {
   const { onAdd } = props;
   const { productId } = useParams<{ productId: string }>();
-  const { setRestaurant, setChosenProduct } = actionDispatch(useDispatch());
+  const dispatch = useDispatch();
   const { chosenProduct } = useSelector(chosenProductRetriever);
   const { restaurant } = useSelector(restaurantRetriever);
 
   useEffect(() => {
     const product = new ProductService();
     product
-    .getProduct(productId)
-    .then(data => setChosenProduct(data))
-    .catch((err) => console.log( err));
+      .getProduct(productId)
+      .then((data) => dispatch(setChosenProduct(data)))
+      .catch((err) => console.log(err));
 
     const member = new MemberService();
     member
-    .getRestaurant()
-    .then((data) => setRestaurant(data))
-    .catch((err) => console.log( err));
-  }, []);
+      .getRestaurant()
+      .then((data) => dispatch(setRestaurant(data)))
+      .catch((err) => console.log(err));
+  // Fetch once per productId to avoid repeated backend calls
+  }, [dispatch, productId]);
 
   if (!chosenProduct)  return null; 
+  const imageList =
+    chosenProduct.images && chosenProduct.images.length > 0
+      ? chosenProduct.images
+      : ["/icons/noimage-list.svg"];
   return (
     <div className={"chosen-product"}>
-      <Box className={"title"}>Product Detail</Box>
+      <Box className={"title"}>Camera Detail</Box>
       <Container className={"product-container"}>
         <Stack className={"chosen-product-slider"}>
           <Swiper
@@ -78,45 +77,58 @@ export default function ChosenProduct(props: ChosenProductProps) {
             modules={[FreeMode, Navigation, Thumbs]}
             className="swiper-area"
           >
-            {chosenProduct?.productImages.map(
-              (ele: string, index: number) => {
-                const ImagePath = `${serverApi}/${ele}`;
-                return (
-                  <SwiperSlide key={index}>
-                   <img
+            {imageList.map((ele: string, index: number) => {
+              const imagePath = (() => {
+                if (!ele) return "/icons/noimage-list.svg";
+                if (ele.startsWith("data:") || ele.startsWith("http")) return ele;
+                const cleaned = ele.replace(/^\/+/, "");
+                if (cleaned.toLowerCase().startsWith("uploads/")) {
+                  return `http://localhost:9090/${cleaned}`;
+                }
+                if (cleaned.includes("/")) {
+                  return `http://localhost:9090/uploads/${cleaned}`;
+                }
+                return `http://localhost:9090/uploads/products/${cleaned}`;
+              })();
+              return (
+                <SwiperSlide key={index}>
+                  <img
                     className="slider-image"
-                    src={ImagePath}
-                    alt={chosenProduct?.productName || "Mahsulot rasmi"}
-                   />
-                 </SwiperSlide>
-                );
-              }
-            )}
+                    src={imagePath}
+                    alt={chosenProduct?.cameraModel || "Camera image"}
+                  />
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
         </Stack>
         <Stack className={"chosen-product-info"}>
           <Box className={"info-box"}>
-            <strong className={"product-name"}>{chosenProduct?.productName}</strong>
-            <span className={"resto-name"}>{restaurant?.memberNick}</span>
-             <span className={"resto-name"}>{restaurant?.memberPhone}</span>
+            <strong className={"product-name"}>{chosenProduct?.brand ? `${chosenProduct.brand} ${chosenProduct.cameraModel}` : chosenProduct?.cameraModel}</strong>
+            <span className={"resto-name"}>
+              Managed by: {restaurant?.memberNick || "Camera Shop Dev admin"}
+            </span>
+             <span className={"resto-name"}>
+              {restaurant?.memberPhone || "No contact listed"}
+              </span>
             <Box className={"rating-box"}>
-              <Rating name="half-rating" defaultValue={2.5} precision={0.5} />
+              <Rating name="half-rating" defaultValue={4.5} precision={0.5} />
               <div className={"evaluation-box"}>
                 <div className={"product-view"}>
                   <RemoveRedEyeIcon sx={{ mr: "10px" }} />
-                  <span>{chosenProduct?.productViews}</span>
+                  <span>{chosenProduct?.views ?? 0}</span>
                 </div>
               </div>
             </Box>
             <p className={"product-desc"}>
-              {chosenProduct?.productDesc
-            ? chosenProduct?.productDesc 
-            : "No Description"}
+              {chosenProduct?.description
+                ? chosenProduct?.description
+                : "No Description"}
             </p>
             <Divider height="1" width="100%" bg="#000000" />
             <div className={"product-price"}>
               <span>Price:</span>
-              <span>{chosenProduct?.productPrice}</span>
+              <span>${chosenProduct?.price}</span>
             </div>
             <div className={"button-box"}>
               <Button variant="contained"
@@ -124,9 +136,9 @@ export default function ChosenProduct(props: ChosenProductProps) {
                 onAdd({
                   _id: chosenProduct._id,
                   quantity: 1,
-                  name: chosenProduct.productName,
-                  price: chosenProduct.productPrice,
-                  image: chosenProduct.productImages[0],
+                  name: chosenProduct.cameraModel,
+                  price: chosenProduct.price,
+                  image: chosenProduct.images?.[0],
                 });
               e.stopPropagation();
                 }}

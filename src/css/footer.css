@@ -10,10 +10,36 @@
 
 .sns-context {
   margin-top: 17px;
-  width: 137px;
+  width: 190px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 12px;
+}
+
+.sns-context a {
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.18), transparent 40%),
+              linear-gradient(145deg, rgba(55, 118, 204, 0.28), rgba(215, 182, 134, 0.24));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.sns-context a:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.32);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.sns-context img {
+  width: 22px;
+  height: 22px;
 }
 
 .foot-category-title {

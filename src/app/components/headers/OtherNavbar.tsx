@@ -3,15 +3,15 @@ import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
 import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobals";
-import { serverApi } from "../../../lib/config";
+import { getMediaUrl } from "../../../lib/config";
 import { Logout } from "@mui/icons-material";
 
 interface OtherNavbarProps {
   cartItems: CartItem[];
   onAdd: (item: CartItem) => void;
   onRemove: (item: CartItem) => void;
-  onDelete: (item: CartItem) => void;
-  onDeleteAll: () => void;
+    onDelete: (item: CartItem) => void;
+    onDeleteAll: () => void;
   setSignupOpen: (isOpen: boolean) => void;
   setLoginOpen: (isOpen: boolean) => void;
    handleLogoutClick: (e: React.MouseEvent<HTMLImageElement>) => void;
@@ -21,21 +21,28 @@ interface OtherNavbarProps {
 }
 
 export default function OtherNavbar(props: OtherNavbarProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {
     cartItems,
     onAdd,
     onRemove,
     onDelete,
     onDeleteAll,
-    setSignupOpen,
+    setSignupOpen: _setSignupOpen,
     setLoginOpen,
     handleLogoutClick,
     anchorEl,
     handleLogoutClose,
     handleLogoutRequest,
   } = props;
+  void _setSignupOpen;
 
   const { authMember } = useGlobals();
+  const canAdd =
+    authMember &&
+    ["ADMIN", "AGENT", "USER"].includes(
+      (authMember.memberType as string) || ""
+    );
 
   return (
     <div className="other-navbar">
@@ -43,7 +50,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
         <Stack className="menu">
           <Box>
             <NavLink to="/">
-              <img className="brand-logo" src="/icons/burak.svg" />
+              <img className="brand-logo" src="/icons/all-camera-world.svg" alt="Camera Shop Dev logo" />
             </NavLink>
           </Box>
           <Stack className="links">
@@ -53,10 +60,17 @@ export default function OtherNavbar(props: OtherNavbarProps) {
               </NavLink>
             </Box>
             <Box className="hover-line">
-              <NavLink to="/products" activeClassName={"underline"}>
-                Products
+              <NavLink to="/cameras" activeClassName={"underline"}>
+                Cameras
               </NavLink>
             </Box>
+            {canAdd ? (
+              <Box className="hover-line">
+                <NavLink to="/add-product" activeClassName={"underline"}>
+                  Add Camera
+                </NavLink>
+              </Box>
+            ) : null}
             {authMember ? (
               <Box className="hover-line">
                 <NavLink to="/orders" activeClassName={"underline"}>
@@ -100,13 +114,14 @@ export default function OtherNavbar(props: OtherNavbarProps) {
 
           <img
                   className="user-avatar"
-                 src={authMember?.memberImage 
-                 ? `${serverApi}/${authMember?.memberImage}` 
-                 : "/icons/default-user.svg"}
-                 aria-haspopup="true"
+                 src={
+                  getMediaUrl(authMember?.memberImage) ||
+                  "/icons/default-user.svg"
+                 }
+                 alt="User avatar"
                  onClick={handleLogoutClick}
              />
-          )}
+         )}
             <Menu
                      anchorEl={anchorEl}
 	                   id="account-menu"

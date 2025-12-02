@@ -15,7 +15,7 @@ import OrderService from "../../services/OrderService";
 import { OrderStatus } from "../../../lib/enums/order.enum";
 import { useGlobals } from "../../hooks/useGlobals";
 import "../../../css/order.css";
-import { serverApi } from "../../../lib/config";
+import { getMediaUrl, mediaApi, serverApi } from "../../../lib/config";
 import { useHistory } from "react-router-dom";
 import { MemberType } from "../../../lib/enums/member.enum";
 
@@ -32,9 +32,16 @@ export default function OrdersPage() {
     actionDispatch(useDispatch());
 
   const { orderBuilder, authMember } = useGlobals();
+  const roleIcon =
+    authMember?.memberType === MemberType.ADMIN ||
+    authMember?.memberType === MemberType.RESTAURANT
+      ? "/icons/admin-badge.svg"
+      : authMember?.memberType === MemberType.AGENT
+      ? "/icons/agent-badge.svg"
+      : "/icons/user-badge.svg";
 
   const [value, setValue] = useState("1");
-  const [orderInquiry, setOrderInquiry] = useState<OrderInquiry>({
+  const [orderInquiry] = useState<OrderInquiry>({
     page: 1,
     limit: 4,
     orderStatus: OrderStatus.PAUSE,
@@ -56,6 +63,7 @@ export default function OrdersPage() {
       .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.FINISH })
       .then((data) => setFinishedOrders(data))
       .catch((err) => console.log(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderInquiry, orderBuilder]); //hamma orderlarni order depency orali rebuild qildik
 
   /* HANDLERS */
@@ -110,19 +118,17 @@ export default function OrdersPage() {
                 <img
                   src={
                     authMember?.memberImage
-                      ? `${serverApi}/${authMember?.memberImage}`
+                      ? getMediaUrl(authMember.memberImage) || "/icons/default-user.svg"
                       : "/icons/default-user.svg"
                   }
                   className={"order-user-avatar"}
+                  alt={authMember?.memberNick || "User avatar"}
                 />
                 <div className={"order-user-icon-box"}>
                   <img
-                    src={
-                      authMember?.memberType === MemberType.RESTAURANT
-                        ? "/icons/restaurant.svg"
-                        : "/icons/user-badge.svg"
-                    }
+                    src={roleIcon}
                     className={"order-user-prof-img"}
+                    alt="Role icon"
                   />
                 </div>
               </div>
@@ -178,10 +184,10 @@ export default function OrdersPage() {
                 </div>
               </Box>
               <Box className={"member-card-type"}>
-                <img src="/icons/western-card.svg" alt="" />
-                <img src="/icons/master-card.svg" alt="" />
-                <img src="/icons/paypal-card.svg" alt="" />
-                <img src="/icons/visa-card.svg" alt="" />
+                <img src="/icons/western-card.svg" alt="Western card" />
+                <img src="/icons/master-card.svg" alt="Master card" />
+                <img src="/icons/paypal-card.svg" alt="PayPal card" />
+                <img src="/icons/visa-card.svg" alt="Visa card" />
               </Box>
             </Box>
           </Box>

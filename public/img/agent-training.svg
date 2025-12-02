@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Training</title>
+  <desc id="desc">Session art for agent onboarding.</desc>
+  <defs>
+    <linearGradient id="train" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f2b40"/>
+      <stop offset="100%" stop-color="#20a4f3"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="400" rx="28" fill="url(#train)"/>
+  <rect x="70" y="90" width="200" height="220" rx="24" fill="#0a1726" stroke="#e9f3ff" stroke-width="6"/>
+  <circle cx="170" cy="170" r="54" fill="#2f7cff" stroke="#b7d8ff" stroke-width="8"/>
+  <rect x="370" y="120" width="200" height="140" rx="22" fill="#0a1726" stroke="#e9f3ff" stroke-width="6" opacity="0.92"/>
+  <path d="M380 240h180" stroke="#20a4f3" stroke-width="12" stroke-linecap="round" opacity="0.8"/>
+  <path d="M380 210h140" stroke="#89cff0" stroke-width="10" stroke-linecap="round" opacity="0.8"/>
+  <path d="M380 180h120" stroke="#e9f3ff" stroke-width="8" stroke-linecap="round" opacity="0.8"/>
+  <text x="70" y="330" font-family="Arial, Helvetica, sans-serif" font-size="40" fill="#e9f3ff" font-weight="700">Agent Onboarding</text>
+  <text x="70" y="360" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#d6e8ff">Catalog rules · Media standards · Support flows</text>
+</svg>

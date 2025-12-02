@@ -8,19 +8,31 @@ import HomeNavbar from "./components/headers/HomeNavbar";
 import OtherNavbar from "./components/headers/OtherNavbar";
 import  Footer  from "./components/footer";
 import  HelpPage  from "./screens/helpPage";
+import AddProduct from "./screens/addProduct";
+import BrandPage from "./screens/brandPage";
 import useBasket from "./hooks/useBasket";
 import AuthenticationModal from "./components/auth";
-import { T } from "../lib/types/common";
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "../lib/sweetAlert";
 import { Messages } from "../lib/config";
 import MemberService from "./services/MemberService";
 import { useGlobals } from "./hooks/useGlobals";
+//@ts-ignore 
 import "../css/app.css";
+//@ts-ignore 
 import "../css/navbar.css";
+//@ts-ignore 
 import "../css/footer.css";
 
 function App() {
+     console.log("APP COMPONENT LOADED");
      const location = useLocation();
+     console.log("LOCATION VALUE:", location);
+     console.log("RENDERING STARTED");
+     try {
+       console.log("APP RENDER TEST");
+     } catch (err) {
+       console.error("REACT RUNTIME ERROR:", err);
+     }
      const {setAuthMember} = useGlobals();
      const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = useBasket();
      const [signupOpen, setSignupOpen] = useState<boolean>(false);
@@ -82,17 +94,23 @@ function App() {
       />
     )}
         <Switch>
-          <Route path="/products">
+          <Route path="/cameras">
             <ProductsPage onAdd={onAdd}/>
           </Route>
           <Route path="/orders">
             <OrdersPage />
+          </Route>
+          <Route path="/brand/:brandName">
+            <BrandPage />
           </Route>
           <Route path="/member-page">
             <UserPage />
           </Route>
           <Route path="/help">
             <HelpPage />
+          </Route>
+          <Route path="/add-product">
+            <AddProduct />
           </Route>
           <Route path="/">
             <HomePage />

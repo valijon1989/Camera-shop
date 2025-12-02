@@ -1,10 +1,10 @@
 import { Box, Button, Container, ListItemIcon, Menu, MenuItem, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobals";
-import { serverApi } from "../../../lib/config";
+import { getMediaUrl } from "../../../lib/config";
 import { Logout } from "@mui/icons-material";
 
 interface HomeNavbarProps {
@@ -37,6 +37,11 @@ export default function HomeNavbar(props: HomeNavbarProps) {
     handleLogoutRequest,
   } = props;
     const { authMember} = useGlobals();
+    const canAdd =
+      authMember &&
+      ["ADMIN", "AGENT", "USER"].includes(
+        (authMember.memberType as string) || ""
+      );
    
    
 
@@ -49,7 +54,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
             
             <Box>
                <NavLink to="/">
-               <img className="brand-logo" src="/icons/burak.svg"/>   
+               <img className="brand-logo" src="/icons/all-camera-world.svg" alt="Camera Shop Dev logo"/>   
                </NavLink>
             </Box>
               <Stack className="links">
@@ -59,10 +64,17 @@ export default function HomeNavbar(props: HomeNavbarProps) {
                   </NavLink>
                 </Box>
                 <Box className={"hover-line"}>
-                  <NavLink to="/products"  activeClassName={"underline"}>
-                    Products
+                  <NavLink to="/cameras"  activeClassName={"underline"}>
+                    Cameras
                     </NavLink>
                 </Box>
+                {canAdd ? (
+                  <Box className={"hover-line"}>
+                    <NavLink to="/add-product" activeClassName={"underline"}>
+                      Add Camera
+                    </NavLink>
+                  </Box>
+                ) : null}
                 {authMember ? (
                      <Box className={"hover-line"}>
                   <NavLink to="/orders"  activeClassName={"underline"}>
@@ -104,12 +116,13 @@ export default function HomeNavbar(props: HomeNavbarProps) {
                     ) : (
                        <img
                          className="user-avatar"
-                         src={authMember?.memberImage 
-                          ? `${serverApi}/${authMember?.memberImage}` 
-                          : "/icons/default-user.svg"}
-                          aria-haspopup="true"
+                         src={
+                          getMediaUrl(authMember?.memberImage) ||
+                          "/icons/default-user.svg"
+                         }
+                         alt="User avatar"
                          onClick={handleLogoutClick}
-                         />
+                       />
                     )}
 
                     <Menu
@@ -157,16 +170,16 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               </Stack>
             </Stack>
 
-            <Stack className={"header-frame"}>
+             <Stack className={"header-frame"}>
              <Stack className="detail">
               <Box className={"head-main-text"}>
-                World's Most Delicious Cousine
+                Pro-grade camera marketplace
               </Box>
               <Box className={"wel-text"}>
-                The Choice, not just a Choice
+                Admin-led platform, agent-curated catalog
               </Box>
               <Box className={"sevice-text"}>
-               24 hours service
+               Verified listings, secure checkout, 24/7 admin care
               </Box>
               <Box className={"signup"}>
                 {!authMember ? 

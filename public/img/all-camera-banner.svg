@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">All Camera World Hero</title>
+  <desc id="desc">Abstract camera shapes for the All Camera World landing hero background.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1f33"/>
+      <stop offset="50%" stop-color="#123d64"/>
+      <stop offset="100%" stop-color="#02101f"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2f7cff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#89cff0" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="900" fill="url(#bg)"/>
+  <circle cx="1100" cy="220" r="140" fill="#2f7cff" opacity="0.08"/>
+  <circle cx="320" cy="180" r="110" fill="#89cff0" opacity="0.06"/>
+  <g opacity="0.16" fill="none" stroke="url(#glow)" stroke-width="18">
+    <rect x="200" y="420" width="320" height="220" rx="40"/>
+    <rect x="240" y="460" width="240" height="140" rx="24"/>
+    <circle cx="360" cy="540" r="60"/>
+  </g>
+  <g transform="translate(780 360)">
+    <rect x="0" y="0" width="440" height="260" rx="40" fill="rgba(255,255,255,0.05)" stroke="#2f7cff" stroke-width="6"/>
+    <circle cx="220" cy="130" r="84" fill="none" stroke="#89cff0" stroke-width="14"/>
+    <circle cx="220" cy="130" r="46" fill="#2f7cff" opacity="0.7" stroke="#b7d8ff" stroke-width="8"/>
+    <rect x="44" y="-46" width="120" height="36" rx="14" fill="#2f7cff" opacity="0.8"/>
+  </g>
+  <text x="200" y="300" font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="700" fill="#e9f3ff">All Camera World</text>
+  <text x="200" y="360" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#b7d8ff">Admin-run platform · Agent-ready tools · Shopper-first storefront</text>
+</svg>

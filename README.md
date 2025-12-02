@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# All Camera World React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
+Frontend for the All Camera World platform, where a single admin manages inventory, agents keep listings fresh, and users shop for cameras, lenses, drones, and accessories.
 
 ## Available Scripts
 
@@ -44,3 +44,35 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Default AI model (project-wide)
+
+This project includes a project-level environment variable to select the default AI/model used by client code: `REACT_APP_DEFAULT_AI_MODEL`.
+
+- To enable Raptor mini (Preview) for all clients, set:
+
+	```env
+	REACT_APP_DEFAULT_AI_MODEL=raptor-mini-preview
+	```
+
+- Individual components or services can override this by explicitly using a different model identifier in their configuration or requests.
+
+We added `src/lib/config.ts` which now exports `defaultAIModel` from `process.env.REACT_APP_DEFAULT_AI_MODEL` and falls back to `raptor-mini-preview` if unset.
+
+## Local demo backend (file uploads)
+
+This repo now contains a small demo backend under the `server/` folder so you can test file uploads locally and serve uploaded images from `/uploads`.
+
+Quick start for local testing:
+
+```bash
+cd server
+npm install
+npm run start
+```
+
+Server endpoints:
+- POST /api/cameras — accepts multipart form-data with `images` files and returns the created product with `images` pointing to `uploads/<filename>`
+- GET /api/cameras — returns an in-memory list of products (use `/api/seed-demo` to pre-seed two demo products)
+
+This allows the frontend to create products using `multipart/form-data` (Add Product) and then display images (served from http://localhost:9090/uploads/...).

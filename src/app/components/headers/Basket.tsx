@@ -8,11 +8,10 @@ import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useHistory } from "react-router-dom";
 import { CartItem } from "../../../lib/types/search";
-import { Messages, serverApi } from "../../../lib/config";
+import { Messages, mediaApi, getMediaUrl } from "../../../lib/config";
 import { useGlobals } from "../../hooks/useGlobals";
 import { sweetErrorHandling } from "../../../lib/sweetAlert";
 import OrderService from "../../services/OrderService";
-import { on } from "events";
 
 interface BasketProps {
   cartItems: CartItem[];
@@ -140,7 +139,7 @@ const proceedOrderHandler = async () => {
           <Box className={"orders-main-wrapper"}>
             <Box className={"orders-wrapper"}>
               {cartItems.map((item: CartItem) => {
-                const ImagePath = `${serverApi}/${item.image}`;
+                const ImagePath = getMediaUrl(item.image) || (item.image?.startsWith("http") ? item.image : `${mediaApi}/${String(item.image).replace(/^\/+/, "")}`);
 
                 return (
                   <Box className={"basket-info-box"} key={item._id}>

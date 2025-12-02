@@ -1,14 +1,31 @@
 .home-navbar {
+    position: relative;
     width: 100%;
-    height: 773px;
+    height: 420px;
     display: flex;
-    background: url("/public/img/banner.webp");
+    overflow: hidden;
+    background:
+      linear-gradient(130deg, rgba(4, 12, 22, 0.92) 0%, rgba(10, 32, 60, 0.88) 50%, rgba(8, 16, 28, 0.9) 100%),
+      url("/public/img/banner.webp");
     background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.home-navbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 30%, rgba(55, 118, 204, 0.24), transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(215, 182, 134, 0.18), transparent 35%),
+                linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.15) 100%);
+    pointer-events: none;
 }
 
 .home-navbar .navbar-container {
-   margin-top: 55px;
-   height: 642px;
+   position: relative;
+   margin-top: 16px;
+   padding-bottom: 8px;
 }
 
 .home-navbar .navbar-container .menu {
@@ -76,60 +93,64 @@
 }
 
 .home-navbar .navbar-container .header-frame {
-    margin-top: 142px;
-    height: 462px;
+    margin-top: 28px;
+    min-height: 220px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    gap: 40px;
 }
 
 .home-navbar .navbar-container .header-frame .detail {
-   width: 510px;
+   width: 520px;
    display: flex;
     flex-direction: column;
+    gap: 16px;
 }
 
 .home-navbar .navbar-container .header-frame .detail .head-main-text {
 width: 450px;
-height: 150px;
+height: auto;
 font-family: "Roboto Serif";
-font-size: 50px;
+font-size: 46px;
 font-style: normal;
 font-weight: 500;
-line-height: normal;
-letter-spacing: -0,75px;
+line-height: 1.1;
+letter-spacing: -0.5px;
 color: #f8f8ff;
+text-shadow: 0 6px 28px rgba(0, 0, 0, 0.35);
 }
 
 .home-navbar .navbar-container .header-frame .detail .wel-text {
-    width: 510px;
-    height: 42px;
+    width: 520px;
+    min-height: 42px;
     font-family: "Roboto Serif";
-    font-size: 36px;
+    font-size: 24px;
     font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    letter-spacing: -0.54px;
-    color: #d7b686;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    color: #e9e9f1;
 }
 
 .home-navbar .navbar-container .header-frame .detail .sevice-text {
-    margin-top: 23px;
-    width: 153px;
-    height: 23px;
+    margin-top: 6px;
+    width: 380px;
+    min-height: 23px;
     font-family: "Roboto Serif";
-    font-size: 20px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    line-height: normal;
-    letter-spacing: -0.3px;
-    color: #d5d5d5;
+    line-height: 1.5;
+    letter-spacing: -0.15px;
+    color: #cdd4e0;
 }
 
 .home-navbar .navbar-container .header-frame .detail .signup {
-    margin-top: 73px;
+    margin-top: 32px;
 
-    
+
 }
 
 .home-navbar .navbar-container .header-frame .detail .signup .signup-button {
@@ -147,15 +168,15 @@ color: #f8f8ff;
 }
 
 .home-navbar .navbar-container .logo-frame {
-   margin-top: 43px;
-   width: 690px;
-   height: 419px; 
+   margin-top: 20px;
+   width: 400px;
+   height: 230px; 
 }
 
 .home-navbar .navbar-container .logo-frame .logo-img {
   width: 100%;
   height: 100%;
-  background: url("/public/img/logo.webp");
+  background: url("/public/img/all-camera-logo.svg");
   background-size: contain;
   background-repeat: no-repeat;
   filter: invert(25%);
@@ -169,7 +190,7 @@ color: #f8f8ff;
     width: 100%;
     height: 400px;
     display: flex;
-    background: url("/public/img/banner.webp");
+    background: url("/public/img/all-camera-banner.svg");
     background-size: cover;
 }
 
@@ -378,4 +399,3 @@ color: #f8f8ff;
   display: flex;
   flex-direction: column;
 }
-

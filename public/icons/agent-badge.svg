@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Agent badge</title>
+  <desc id="desc">Badge icon for agents.</desc>
+  <defs>
+    <linearGradient id="agent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f2b40"/>
+      <stop offset="100%" stop-color="#20a4f3"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="24" r="12" fill="url(#agent)" stroke="#b7d8ff" stroke-width="2"/>
+  <path d="M16 52c2-12 10-18 16-18s14 6 16 18" fill="url(#agent)" stroke="#b7d8ff" stroke-width="2" stroke-linecap="round"/>
+  <path d="M22 48h20" stroke="#e9f3ff" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+</svg>

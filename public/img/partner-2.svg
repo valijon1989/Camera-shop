@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 500" role="img" aria-labelledby="title desc">
+  <title id="title">Partner DroneOps</title>
+  <desc id="desc">Partner card for a drone brand.</desc>
+  <defs>
+    <linearGradient id="p2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f2b40"/>
+      <stop offset="100%" stop-color="#20a4f3"/>
+    </linearGradient>
+  </defs>
+  <rect x="12" y="12" width="336" height="476" rx="32" fill="url(#p2)" />
+  <path d="M90 190h180l-26 44H116Z" fill="#e9f3ff" opacity="0.9"/>
+  <path d="M120 234h120l-20 90H140Z" fill="#133149" opacity="0.85"/>
+  <path d="M140 324h80v24h-80Z" fill="#20a4f3" opacity="0.85"/>
+  <circle cx="180" cy="180" r="34" fill="#133149" stroke="#e9f3ff" stroke-width="8"/>
+  <text x="50%" y="390" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#e9f3ff" font-weight="700">DroneOps</text>
+  <text x="50%" y="426" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#d6e8ff">Flight &amp; aerial systems</text>
+</svg>

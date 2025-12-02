@@ -6,11 +6,11 @@ import '../../../css/products.css';
 import { CartItem } from "../../../lib/types/search";
 
 interface ProductsPageProps {
-  onAdd: (item: CartItem) => void;
+  onAdd?: (item: CartItem) => void;
 }
 
 export default function ProductsPage(props: ProductsPageProps) {
-  const { onAdd } = props;
+  const onAdd = props.onAdd || (() => undefined);
   const products = useRouteMatch();
 console.log("products:", products);
 
@@ -21,7 +21,7 @@ console.log("products:", products);
       <ChoosenProduct onAdd={onAdd}/>
       </Route>
       <Route path={`${products.path}`}>
-        <Products onAdd={onAdd} />
+        <Products />
       </Route>
     </Switch>
   </div>

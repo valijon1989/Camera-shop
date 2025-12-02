@@ -6,18 +6,53 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import { Settings } from "./Settings";
 import { useHistory } from "react-router-dom";
 import { useGlobals } from "../../hooks/useGlobals";
-import { serverApi } from "../../../lib/config";
+import { getMediaUrl } from "../../../lib/config";
+import { MemberType } from "../../../lib/enums/member.enum";
 import "../../../css/userPage.css";
 
 export default function UserPage() {
   const history = useHistory();
   const { authMember } = useGlobals();
+  const profileImage =
+    authMember?.memberImage && authMember.memberImage !== "undefined"
+      ? getMediaUrl(authMember.memberImage) || "/icons/default-user.svg"
+      : "/icons/default-user.svg";
+  const roleIcon =
+    authMember?.memberType === MemberType.ADMIN ||
+    authMember?.memberType === MemberType.RESTAURANT
+      ? "/icons/admin-badge.svg"
+      : authMember?.memberType === MemberType.AGENT
+      ? "/icons/agent-badge.svg"
+      : "/icons/user-badge.svg";
+  const roleLabel =
+    authMember?.memberType === MemberType.RESTAURANT
+      ? "ADMIN"
+      : authMember?.memberType || "";
 
   if (!authMember) {
     history.push("/");
   }
   return (
     <div className={"user-page"}>
+      <div
+        className="user-hero"
+        style={{
+          backgroundImage: `linear-gradient(180deg, rgba(5,5,9,0.75), rgba(5,5,9,0.9)), url(${profileImage})`,
+        }}
+      >
+        <Container>
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <img src={profileImage} alt="Profile" className="user-hero-avatar" />
+            <Box>
+              <Box className="user-hero-name">{authMember?.memberNick || "Member"}</Box>
+              <Box className="user-hero-role">{roleLabel}</Box>
+              <Box className="user-hero-address">
+                {authMember?.memberAddress || "No address"}
+              </Box>
+            </Box>
+          </Stack>
+        </Container>
+      </div>
       <Container>
         <Stack className={"my-page-frame"}>
           <Stack className={"my-page-left"}>
@@ -38,16 +73,12 @@ export default function UserPage() {
               >
                 <div className={"order-user-img"}>
                   <img
-                    src= {authMember?.memberImage
-                      ? `${serverApi}/${authMember?.memberImage}`
-                      : "/icons/default-user.svg"}
+                    src={profileImage}
                     className={"order-user-avatar"}
+                    alt="User avatar"
                   />
                   <div className={"order-user-icon-box"}>
-                    <img src={
-                      authMember?.memberType === "RESTAURANT" 
-                      ? "/icons/restaurant.svg" 
-                      : "/icons/user-badge.svg"} />
+                    <img src={roleIcon} alt="Role badge" />
                   </div>
                 </div>
                 <span 
@@ -55,7 +86,7 @@ export default function UserPage() {
                   {authMember?.memberNick}</span>
                 <span 
                 className={"order-user-prof"}>
-                  {authMember?.memberType}</span>
+                  {roleLabel}</span>
                 <span 
                 className={"order-user-prof"}>
                   {authMember?.memberAddress 
@@ -63,10 +94,15 @@ export default function UserPage() {
                   : "No address"}</span>
               </Box>
               <Box className={"user-media-box"}>
-                <FacebookIcon />
-                <InstagramIcon />
-                <TelegramIcon />
-                <YouTubeIcon />
+                <a href="https://www.facebook.com/ValijonSirojov" target="_blank" rel="noreferrer">
+                  <img src="/icons/facebook.svg" alt="Facebook" />
+                </a>
+                <a href="https://www.instagram.com/vali__jon_/" target="_blank" rel="noreferrer">
+                  <img src="/icons/instagram.svg" alt="Instagram" />
+                </a>
+                <a href="https://t.me/Abu_Sabriya" target="_blank" rel="noreferrer">
+                  <img src="/icons/telegram.svg" alt="Telegram" />
+                </a>
               </Box>
               <p className={"user-desc"}>{authMember?.memberDesc
                 ? authMember.memberDesc

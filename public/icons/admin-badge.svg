@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Admin badge</title>
+  <desc id="desc">Shield badge used for admin accounts.</desc>
+  <defs>
+    <linearGradient id="admin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1f33"/>
+      <stop offset="100%" stop-color="#2f7cff"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 4 10 12v18c0 14 10 22 22 30 12-8 22-16 22-30V12L32 4Z" fill="url(#admin)" stroke="#b7d8ff" stroke-width="2"/>
+  <path d="M22 32h20M22 24h20M26 20l6-8 6 8" stroke="#e9f3ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="32" cy="40" r="6" fill="#e9f3ff" opacity="0.9"/>
+</svg>

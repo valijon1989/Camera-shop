@@ -1,9 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import Badge from "@mui/material/Badge";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -12,101 +9,103 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch }  from "@reduxjs/toolkit";
 import { setProducts } from "./slice";
-import { Product, ProductInquiry } from "../../../lib/types/product";
+import { Product, ProductInquiry } from "../../services/types/product";
 import { createSelector } from "reselect";
 import { retrieveProducts } from "./selector";
 import ProductService from "../../services/ProductService";
-import { ProductCollection } from "../../../lib/enums/product.enum";
-import { serverApi } from "../../../lib/config";
-import { useHistory } from "react-router-dom";
-import { CartItem } from "../../../lib/types/search";
+import { useHistory, useLocation } from "react-router-dom";
+import "../../../css/products.css";
+import FilterPanel from "../../components/filters/FilterPanel";
 
 
 /** REDUX SKICE & SELECTOR */
-const actionDispatch = (dispatch: Dispatch) => ({
-    setProducts: (data: Product[]) => dispatch(setProducts(data)),
-});
 const productsRetriever = createSelector(retrieveProducts,(products) => ({
    products,
    }));
 
 
-   interface ProductsProps {
-    onAdd: (item: CartItem) => void;
-   }
-
-export default function Products(props: ProductsProps) {
-  const { onAdd } = props;
-  const { setProducts } = actionDispatch(useDispatch());
+export default function Products() {
+  const dispatch: Dispatch = useDispatch();
   const { products } = useSelector(productsRetriever);
   const [productSearch, setProductSearch] = useState<ProductInquiry>({
           page: 1,
-          limit: 8,
+          limit: 12,
           order: "createdAt",
-          productCollection: ProductCollection.DISH,
           search: "",
         });
 
     const [searchText, setSearchText] = useState<string>("");
     const history = useHistory();
+    const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const incoming: ProductInquiry = {
+      page: params.get("page") ? Number(params.get("page")) : 1,
+      limit: params.get("limit") ? Number(params.get("limit")) : 12,
+      order: params.get("order") || "createdAt",
+      search: params.get("search") || "",
+      category: params.get("category") || undefined,
+      brand: params.get("brand") || undefined,
+      minPrice: params.get("minPrice") ? Number(params.get("minPrice")) : undefined,
+      maxPrice: params.get("maxPrice") ? Number(params.get("maxPrice")) : undefined,
+      sensorType: params.get("sensorType") || undefined,
+      resolutionMp: params.get("resolutionMp") ? Number(params.get("resolutionMp")) : undefined,
+      mountType: params.get("mountType") || undefined,
+      videoResolution: params.get("videoResolution") || undefined,
+      isoRange: params.get("isoRange") || undefined,
+      stabilization: params.get("stabilization") || undefined,
+    };
+    setProductSearch((prev) => ({ ...prev, ...incoming }));
+    if (incoming.search) setSearchText(incoming.search);
+  }, [location.search]);
 
 
-    useEffect(() => {
+  useEffect(() => {
       const product = new ProductService();
       product
         .getProducts(productSearch)
         .then((data) => {
-          console.log("data passed here:", data);
-          setProducts(data);
+          dispatch(setProducts(data));
         })
         .catch((err) => console.log(err));
-    }, [productSearch]);
+    }, [productSearch, dispatch]);
 
 
     useEffect(() => {
       if (searchText === "") {
-        productSearch.search = "";
-        setProductSearch({ ...productSearch });
+        setProductSearch((prev) => ({ ...prev, search: "" }));
       }
     }, [searchText]);
 
 
     /** HANDLERS  */ 
 
-    const searchCollectionHandler = (collection: ProductCollection) => {
-     productSearch.page = 1;
-     productSearch.productCollection = collection;
-      setProductSearch({ ...productSearch });
-    };
-
     const searchOrderHandler = (order: string) => {
-     productSearch.page = 1;
-     productSearch.order = order;
-      setProductSearch({ ...productSearch });
+      setProductSearch((prev) => ({ ...prev, page: 1, order }));
     };
 
     const searchProductHandler = () => {
-     productSearch.search = searchText;
-      setProductSearch({ ...productSearch });
+      setProductSearch((prev) => ({ ...prev, page: 1, search: searchText }));
     };
 
     const paginationHandler = (e: ChangeEvent<any>,value: number) => {
-      productSearch.page = value;
-      setProductSearch({ ...productSearch });
+      setProductSearch((prev) => ({ ...prev, page: value }));
     };
 
-
-    const chooseDishHandler = (id: string) => {
-    history.push(`/products/${id}`);
+    const chooseProductHandler = (id: string) => {
+      history.push(`/cameras/${id}`);
     }
-
+    const handleFilterChange = (filters: ProductInquiry) => {
+      setProductSearch((prev) => ({ ...prev, ...filters, page: filters.page || 1 }));
+    };
 
   return (
     <div className="products">
       <Container>
         <Stack flexDirection="column" alignItems="center">
           <Stack className="avatar-big-box">
-            <Box className="category-title">Burak Restaurant</Box>
+            <Box className="category-title">Camera Marketplace Catalog</Box>
 
             <Box className="search-box">
               <input 
@@ -130,6 +129,7 @@ export default function Products(props: ProductsProps) {
               </Button>
             </Box>
           </Stack>
+          <FilterPanel filters={productSearch} onChange={handleFilterChange} />
 
           <Stack className="dishes-filter-section">
             <Stack className="filter-box">
@@ -142,80 +142,57 @@ export default function Products(props: ProductsProps) {
               onClick={() => searchOrderHandler("createdAt")}>
                 NEW
               </Button>
-              <Button 
-              variant="contained" 
-              className={"order"}
-              color={
-                productSearch.order === "productPrice" ? "primary" : "secondary"
-              }
-              onClick={() => searchOrderHandler("productPrice")
-              }>
-                PRICE
-              </Button>
-              <Button 
-              variant="contained" 
-              className={"order"}
-              color={
-                productSearch.order === "productViews" ? "primary" : "secondary"
-              }
-              onClick={() => searchOrderHandler("productViews")}>
-                VIEWS
-              </Button>
             </Stack>
 
             <Stack direction="row" className="list-category-section">
-              <Stack className="product-category">
-                <Button 
+  
+            <Stack className="product-category">
+              <Button
                 variant="contained"
-                 color={
-                  productSearch.productCollection === ProductCollection.DISH 
-                  ? "primary"
-                  :"secondary"}
-                  onClick={() => searchCollectionHandler(ProductCollection.DISH)}>
-                  DISH
-                </Button>
-                <Button 
-                variant="contained" 
-                color={
-                  productSearch.productCollection === ProductCollection.SALAD
-                  ? "primary"
-                  :"secondary"}
-                 onClick={() => searchCollectionHandler(ProductCollection.SALAD)}>
-                  SALAD
-                </Button>
-                <Button 
-                variant="contained" 
-                color={
-                  productSearch.productCollection === ProductCollection.DRINK
-                  ? "primary"
-                  :"secondary"
-                }
-                  onClick={() => searchCollectionHandler(ProductCollection.DRINK)}>
-                  DRINK
-                </Button>
-                <Button 
-                variant="contained" 
-                color={
-                  productSearch.productCollection === ProductCollection.DESERT
-                  ? "primary"
-                  :"secondary"
-                }
-                 onClick={() => searchCollectionHandler(ProductCollection.DESERT)}>
-                  DESERT
-                </Button>
-                <Button 
-                variant="contained" 
-                color={
-                  productSearch.productCollection === ProductCollection.OTHER
-                  ? "primary"
-                  :"secondary"
-                }
-                 onClick={() => searchCollectionHandler(ProductCollection.OTHER)}>
-                  OTHER
-                </Button>
-              </Stack>
+                color={"primary"}
+                onClick={() => setProductSearch((prev)=>({...prev, category: undefined, page:1}))}
+              >
+                ALL
+              </Button>
+              <Button
+                variant="contained"
+                color={"primary"}
+                onClick={() => setProductSearch((prev)=>({...prev, category: "mirrorless", page:1}))}
+              >
+                MIRRORLESS
+              </Button>
+              <Button
+                variant="contained"
+                color={"primary"}
+                onClick={() => setProductSearch((prev)=>({...prev, category: "dslr", page:1}))}
+              >
+                DSLR
+              </Button>
+              <Button
+                variant="contained"
+                color={"primary"}
+                onClick={() => setProductSearch((prev)=>({...prev, category: "lens", page:1}))}
+              >
+                LENSES
+              </Button>
+              <Button
+                variant="contained"
+                color={"primary"}
+                onClick={() => setProductSearch((prev)=>({...prev, category: "drone", page:1}))}
+              >
+                DRONES
+              </Button>
+              <Button
+                variant="contained"
+                color={"primary"}
+                onClick={() => setProductSearch((prev)=>({...prev, category: "accessory", page:1}))}
+              >
+                ACCESSORIES
+              </Button>
+            </Stack>
 
-              <Stack
+
+            <Stack
                 className="product-wrapper"
                 spacing={2}
                 direction="row"
@@ -223,86 +200,55 @@ export default function Products(props: ProductsProps) {
                 justifyContent="center"
               >
                 {products.length !== 0 ? (
-                  products.map((product: Product) => {
-                    const ImagePath = `${serverApi}/${product.productImages[0]}`;
-                    const sizeVolume = 
-                      product.productCollection === ProductCollection.DRINK
-                        ? product.productVolume + "litre"
-                        : product.productSize + "size";
+                  products.map((product: Product, idx: number) => {
+                    const firstImage = product.images?.[0];
+                    const imageSrc = (() => {
+                      if (!firstImage) return "/icons/noimage-list.svg";
+                      if (firstImage.startsWith("data:") || firstImage.startsWith("http")) return firstImage;
+                      const cleaned = firstImage.replace(/^\/+/, "");
+                      if (cleaned.toLowerCase().startsWith("uploads/")) {
+                        return `http://localhost:9090/${cleaned}`;
+                      }
+                      if (cleaned.includes("/")) {
+                        return `http://localhost:9090/uploads/${cleaned}`;
+                      }
+                      return `http://localhost:9090/uploads/products/${cleaned}`;
+                    })();
                     return (
-                      <Stack key={product._id} className={"product-card"} onClick={() => chooseDishHandler(product._id)}>
-                        <Stack
-                          className="product-img"
-                          sx={{
-                            backgroundImage: `url(${ImagePath})`,
-                          }}
-                        >
-                          <div className={"product-sale"}>{sizeVolume}</div>
-                          <Button 
-                          className="shop-btn"
-                          onClick={(e) => {
-                            onAdd({
-                              _id: product._id,
-                              quantity: 1,
-                              name: product.productName,
-                              price: product.productPrice,
-                              image: product.productImages[0],
-                            });
-                            e.stopPropagation();
-                           
-                          }}>
-                            <img
-                              src="/icons/shopping-cart.svg"
-                              alt="Shopping Cart"
-                              style={{ display: "flex" }}
-                            />
-                          </Button>
-
-                          <Button
-                            className="view-btn"
-                            sx={{
-                              right: "36px",
-                              minWidth: "auto",
-                              padding: "6px",
-                            }}
-                          >
-                            <Badge badgeContent={product.productViews} color="secondary">
-                              <RemoveRedEyeIcon
-                                sx={{
-                                  color: 
-                                  product.productViews ===0 ? "gray" : "white",
-                                }}
-                              />
-                            </Badge>
-                          </Button>
+                      <Stack key={product._id || idx} className={"product-card"} onClick={() => chooseProductHandler(product._id)}>
+                        <Stack className="product-img">
+                          <img
+                            src={imageSrc}
+                            alt={product.cameraModel || "Product image"}
+                          />
                         </Stack>
 
                         <Box className={"product-desc"}>
                           <span className={"product-title"}>
-                            {product.productName}
+                            {product.brand ? `${product.brand} ${product.cameraModel || ""}` : product.cameraModel}
                           </span>
                           <div className={"product-desc-icon"}>
-                            <MonetizationOnIcon />
-                            {product.productPrice}
+                            ${product.price ?? 0}
+                          </div>
+                          <div className="product-meta">
+                            <span>{product.condition || "Condition: N/A"}</span>
+                            <span>{product.location || "Location: N/A"}</span>
                           </div>
                         </Box>
                       </Stack>
                     );
                   })
                 ) : (
-                  <Box className="no-data">Products are not available!</Box>
+                  <Box className="no-data">No Cameras Available!</Box>
                 )}
               </Stack>
             </Stack>
 
             <Stack className={"pagination-title"} alignItems={"center"}>
+              {productSearch.page && (
               <Pagination
-                count={
-                  products.length !== 0
-                  ? productSearch.page + 1
-                  : productSearch.page
-                }
-                page={productSearch.page}
+                count={(productSearch.page || 1) + (products.length === productSearch.limit ? 1 : 0)}
+                page={productSearch.page || 1}
                 renderItem={(item) => (
                   <PaginationItem
                     slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
@@ -312,31 +258,87 @@ export default function Products(props: ProductsProps) {
                 )}
                 onChange={paginationHandler}
               />
+              )}
             </Stack>
           </Stack>
         </Stack>
       </Container>
 
       <div className={"brands-logo"}>
-        <Box className="category-title">Our Family Brands</Box>
+        <Box className="category-title">Our Partner Brands</Box>
         <Stack direction="row" spacing={2} mt={2} justifyContent="center">
-          <Box className="brand-img-1" />
-          <Box className="brand-img-2" />
-          <Box className="brand-img-3" />
-          <Box className="brand-img-4" />
+          <Box
+            component="a"
+            className="brand-img-1 brand-link"
+            href="https://t.me/kamerachilar"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Telegram - t.me/kamerachilar"
+          >
+            <span className="brand-link-label">
+              <img src="/icons/telegram.svg" alt="Telegram" />
+              t.me/kamerachilar
+            </span>
+          </Box>
+          <Box
+            component="a"
+            className="brand-img-2 brand-link"
+            href="https://t.me/kamereduz"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Telegram - t.me/kamereduz"
+          >
+            <span className="brand-link-label">
+              <img src="/icons/telegram.svg" alt="Telegram" />
+              t.me/kamereduz
+            </span>
+          </Box>
+          <Box
+            component="a"
+            className="brand-img-3 brand-link"
+            href="https://t.me/orzularorzuligichaqolmaydixarak"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Telegram - t.me/orzularorzuligichaqolmaydixarak"
+          >
+            <span className="brand-link-label">
+              <img src="/icons/telegram.svg" alt="Telegram" />
+              t.me/orzularorzuligichaqolmaydixarak
+            </span>
+          </Box>
+          <Box
+            component="a"
+            className="brand-img-4 brand-link"
+            href="https://t.me/videochilarchat"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Telegram - t.me/videochilarchat"
+          >
+            <span className="brand-link-label">
+              <img src="/icons/telegram.svg" alt="Telegram" />
+              t.me/videochilarchat
+            </span>
+          </Box>
         </Stack>
+        <Box className="partner-telegram">
+          For advertising and services:
+          <a href="https://t.me/Abu_Sabriya" target="_blank" rel="noreferrer" className="telegram-contact">
+            <img src="/icons/telegram.svg" alt="Telegram" />
+          </a>
+        </Box>
       </div>
 
       <div className="address">
-        <Container>
-          <Stack className={"address-area"}>
-            <Box className={"add-title"}>Our address</Box>
+          <Container>
+            <Stack className={"address-area"}>
+            <Box className={"add-title"}>Fulfillment hub</Box>
+            <Box className={"add-address"}>1443 Cheonan-daero, Seonggeo-eup, Seobuk-gu, Cheonan-si</Box>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1498.2231714699258!2d69.22528515394224!3d41.32090667449867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b96d86aa283%3A0x94ce07c99e2fd34e!2sMumtoz%20Restoran!5e0!3m2!1sko!2skr!4v1753959722673!5m2!1sko!2skr"
+              src="https://www.google.com/maps?q=KULOGISTICS%20Korea%201443%20Cheonan-daero,%20Seonggeo-eup,%20Seobuk-gu,%20Cheonan-si&output=embed"
               width="1320"
               height="500"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Restaurant Location"
+              title="Store Location"
             ></iframe>
           </Stack>
         </Container>
