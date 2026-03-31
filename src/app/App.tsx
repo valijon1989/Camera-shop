@@ -24,15 +24,7 @@ import "../css/navbar.css";
 import "../css/footer.css";
 
 function App() {
-     console.log("APP COMPONENT LOADED");
      const location = useLocation();
-     console.log("LOCATION VALUE:", location);
-     console.log("RENDERING STARTED");
-     try {
-       console.log("APP RENDER TEST");
-     } catch (err) {
-       console.error("REACT RUNTIME ERROR:", err);
-     }
      const {setAuthMember} = useGlobals();
      const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = useBasket();
      const [signupOpen, setSignupOpen] = useState<boolean>(false);
@@ -52,12 +44,11 @@ function App() {
       const handleLogoutClose = () =>  setAnchorEl(null);
       const handleLogoutRequest = async () => {
         try {
-        const member = new MemberService();
-        await member.logout();
-        await sweetTopSmallSuccessAlert("success", 700);
-        setAuthMember(null);
-        } catch (err) {
-          console.log("Error, login:", err);
+      const member = new MemberService();
+      await member.logout();
+      await sweetTopSmallSuccessAlert("success", 700);
+      setAuthMember(null);
+      } catch (err) {
           sweetErrorHandling(Messages.error1).then();
         }
       }

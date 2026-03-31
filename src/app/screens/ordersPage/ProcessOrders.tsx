@@ -6,7 +6,7 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrieveProcessOrders } from "./selector";
-import { Messages, mediaApi, serverApi, getMediaUrl } from "../../../lib/config";
+import { Messages, mediaApi, getMediaUrl } from "../../../lib/config";
 import { Order, OrderItem, OrderUpdateInput } from "../../../lib/types/order";
 import { Product } from "../../services/types/product";
 import { useGlobals } from "../../hooks/useGlobals";
@@ -55,7 +55,6 @@ const finishOrderHandler = async (e: T) => {
          setOrderBuilder(new Date());
         }
      } catch (err) {
-         console.log(err);
          sweetErrorHandling(err).then();
      }
  };

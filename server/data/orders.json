@@ -1,0 +1,128 @@
+[
+  {
+    "_id": "order-c497f0f2-64c7-4891-b3d0-30827302a6af",
+    "orderTotal": 5998,
+    "orderDelivery": 0,
+    "orderStatus": "FINISH",
+    "memberId": "member-aa2de70a-6997-414c-9545-24cfc7c0df6d",
+    "createdAt": "2026-03-31T04:53:44.651Z",
+    "updatedAt": "2026-03-31T04:53:54.839Z",
+    "orderItems": [
+      {
+        "_id": "order-item-1a2e4dea-3fc0-43c7-92ac-253ebd58f82f",
+        "itemQuantity": 1,
+        "itemPrice": 2199,
+        "orderId": "order-c497f0f2-64c7-4891-b3d0-30827302a6af",
+        "productId": "demo-5",
+        "createdAt": "2026-03-31T04:53:44.651Z",
+        "updatedAt": "2026-03-31T04:53:44.651Z"
+      },
+      {
+        "_id": "order-item-6d5d9901-b5df-4b1f-9162-92f2c002b1b8",
+        "itemQuantity": 1,
+        "itemPrice": 2500,
+        "orderId": "order-c497f0f2-64c7-4891-b3d0-30827302a6af",
+        "productId": "demo-1",
+        "createdAt": "2026-03-31T04:53:44.651Z",
+        "updatedAt": "2026-03-31T04:53:44.651Z"
+      },
+      {
+        "_id": "order-item-3fc0254c-69e1-421a-b962-f0426faf316d",
+        "itemQuantity": 1,
+        "itemPrice": 1299,
+        "orderId": "order-c497f0f2-64c7-4891-b3d0-30827302a6af",
+        "productId": "demo-4",
+        "createdAt": "2026-03-31T04:53:44.651Z",
+        "updatedAt": "2026-03-31T04:53:44.651Z"
+      }
+    ],
+    "productData": [
+      {
+        "_id": "demo-5",
+        "cameraModel": "Mavic 3 Pro",
+        "brand": "DJI",
+        "category": "drone",
+        "price": 2199,
+        "images": [
+          "/img/dji-mavic3pro.jpg"
+        ],
+        "stock": 4,
+        "description": "Triple-camera drone system for cinematic aerial footage and commercial shoots.",
+        "views": 198,
+        "createdAt": "2025-12-06T00:00:00.000Z"
+      },
+      {
+        "_id": "demo-1",
+        "cameraModel": "Sony A7 IV",
+        "brand": "Sony",
+        "category": "mirrorless",
+        "price": 2500,
+        "images": [
+          "/img/sony-camera-product.jpg"
+        ],
+        "stock": 5,
+        "description": "33MP full-frame hybrid camera with strong autofocus and 4K video.",
+        "views": 284,
+        "createdAt": "2025-12-02T00:00:00.000Z"
+      },
+      {
+        "_id": "demo-4",
+        "cameraModel": "Lumix 24-70 Pro",
+        "brand": "Panasonic",
+        "category": "lens",
+        "price": 1299,
+        "images": [
+          "/img/panasonic-lumix-product.jpg"
+        ],
+        "stock": 6,
+        "description": "Fast standard zoom lens built for hybrid creators and everyday professional work.",
+        "views": 142,
+        "createdAt": "2025-12-05T00:00:00.000Z"
+      }
+    ],
+    "prductData": [
+      {
+        "_id": "demo-5",
+        "cameraModel": "Mavic 3 Pro",
+        "brand": "DJI",
+        "category": "drone",
+        "price": 2199,
+        "images": [
+          "/img/dji-mavic3pro.jpg"
+        ],
+        "stock": 4,
+        "description": "Triple-camera drone system for cinematic aerial footage and commercial shoots.",
+        "views": 198,
+        "createdAt": "2025-12-06T00:00:00.000Z"
+      },
+      {
+        "_id": "demo-1",
+        "cameraModel": "Sony A7 IV",
+        "brand": "Sony",
+        "category": "mirrorless",
+        "price": 2500,
+        "images": [
+          "/img/sony-camera-product.jpg"
+        ],
+        "stock": 5,
+        "description": "33MP full-frame hybrid camera with strong autofocus and 4K video.",
+        "views": 284,
+        "createdAt": "2025-12-02T00:00:00.000Z"
+      },
+      {
+        "_id": "demo-4",
+        "cameraModel": "Lumix 24-70 Pro",
+        "brand": "Panasonic",
+        "category": "lens",
+        "price": 1299,
+        "images": [
+          "/img/panasonic-lumix-product.jpg"
+        ],
+        "stock": 6,
+        "description": "Fast standard zoom lens built for hybrid creators and everyday professional work.",
+        "views": 142,
+        "createdAt": "2025-12-05T00:00:00.000Z"
+      }
+    ]
+  }
+]

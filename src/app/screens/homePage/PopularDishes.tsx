@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrievePopularDishes } from "./selector";
 import { Product } from "../../services/types/product";
+import { getMediaUrl } from "../../../lib/config";
 
 
 /** REDUX SKICE & SELECTOR */
@@ -50,19 +51,7 @@ export default function PopularDishes() {
                         {list.length !== 0 ? (
                         list.map((product: Product) => {
                             const primaryImage = product.images?.[0];
-                            const imagePath = (() => {
-                              if (!primaryImage) return "/icons/noimage-list.svg";
-                              if (primaryImage.startsWith("data:") || primaryImage.startsWith("http"))
-                                return primaryImage;
-                              const cleaned = primaryImage.replace(/^\/+/, "");
-                              if (cleaned.toLowerCase().startsWith("uploads/")) {
-                                return `http://localhost:9090/${cleaned}`;
-                              }
-                              if (cleaned.includes("/")) {
-                                return `http://localhost:9090/uploads/${cleaned}`;
-                              }
-                              return `http://localhost:9090/uploads/products/${cleaned}`;
-                            })();
+                            const imagePath = getMediaUrl(primaryImage) || "/icons/noimage-list.svg";
                             const price = priceFormatter.format(product.price || 0);
                             const collection = product.category?.toLowerCase();
                             const shortDesc =

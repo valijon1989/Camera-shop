@@ -3,7 +3,7 @@
 This is a tiny demo backend you can run locally to test uploading files and static serving.
 
 How it works
-- Runs an Express server at port 9090 (default). API lives under `/api`.
+- Runs an Express server at port 9091 by default. API lives under `/api`.
 - POST `/api/cameras` accepts `multipart/form-data` with up to 5 images under field `images` and other camera fields.
 - Uploaded files are stored in `server/uploads` and served at `/uploads/<filename>`.
 - GET `/api/cameras` returns a list of created products persisted to disk in `server/data/products.json`.
@@ -19,7 +19,7 @@ npm run start
 Upload example with curl (multipart):
 
 ```bash
-curl -X POST 'http://localhost:9090/api/cameras' \
+curl -X POST 'http://localhost:9091/api/cameras' \
   -F 'cameraModel=TestCam' \
   -F 'brand=DemoBrand' \
   -F 'price=123' \
@@ -30,8 +30,8 @@ curl -X POST 'http://localhost:9090/api/cameras' \
 A simple GET to seed demo data:
 
 ```bash
-curl -X POST 'http://localhost:9090/api/seed-demo'
-curl 'http://localhost:9090/api/cameras'
+curl -X POST 'http://localhost:9091/api/seed-demo'
+curl 'http://localhost:9091/api/cameras'
 ```
 
 Notes

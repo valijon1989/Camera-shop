@@ -6,7 +6,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrievePausedOrders } from "./selector";
-import { Messages, mediaApi, serverApi, getMediaUrl } from "../../../lib/config";
+import { Messages, mediaApi, getMediaUrl } from "../../../lib/config";
 import { Order, OrderItem, OrderUpdateInput } from "../../../lib/types/order";
 import { Product } from "../../services/types/product";
 import { T } from "../../../lib/types/common";
@@ -53,7 +53,6 @@ const deleteOrderHandler = async (e: T ) => {
             setOrderBuilder(new Date());
          }
      } catch (err) {
-         console.log(err);
          sweetErrorHandling(err).then();
      }
 };
@@ -76,7 +75,6 @@ const deleteOrderHandler = async (e: T ) => {
          setOrderBuilder(new Date());
         }
      } catch (err) {
-         console.log(err);
          sweetErrorHandling(err).then();
      }
  };

@@ -15,7 +15,7 @@ import OrderService from "../../services/OrderService";
 import { OrderStatus } from "../../../lib/enums/order.enum";
 import { useGlobals } from "../../hooks/useGlobals";
 import "../../../css/order.css";
-import { getMediaUrl, mediaApi, serverApi } from "../../../lib/config";
+import { getMediaUrl } from "../../../lib/config";
 import { useHistory } from "react-router-dom";
 import { MemberType } from "../../../lib/enums/member.enum";
 
@@ -48,29 +48,37 @@ export default function OrdersPage() {
   });
 
   useEffect(() => {
+    if (!authMember) return;
+
     const order = new OrderService();
     order
       .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PAUSE })
       .then((data) => setPausedOrders(data))
-      .catch((err) => console.log(err));
+      .catch(() => setPausedOrders([]));
 
     order
       .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PROCESS })
       .then((data) => setProcessOrders(data))
-      .catch((err) => console.log(err));
+      .catch(() => setProcessOrders([]));
 
     order
       .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.FINISH })
       .then((data) => setFinishedOrders(data))
-      .catch((err) => console.log(err));
+      .catch(() => setFinishedOrders([]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [orderInquiry, orderBuilder]); //hamma orderlarni order depency orali rebuild qildik
+  }, [authMember, orderInquiry, orderBuilder]); //hamma orderlarni order depency orali rebuild qildik
 
   /* HANDLERS */
   const handleChange = (e: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  if (!authMember) history.push("/");
+  useEffect(() => {
+    if (!authMember) {
+      history.push("/");
+    }
+  }, [authMember, history]);
+
+  if (!authMember) return null;
 
   return (
     <div className={"order-page"}>

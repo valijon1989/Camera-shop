@@ -4,7 +4,6 @@ import { Box, Button, MenuItem, Select, Stack, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { ProductInquiry } from "../../services/types/product";
 import { cameraBrands } from "../../data/brands";
-import { useHistory, useLocation } from "react-router-dom";
 
 interface FilterPanelProps {
   filters: ProductInquiry;
@@ -19,8 +18,6 @@ const isoOptions = ["100-51200", "64-25600", "50-102400"];
 const stabilizationOptions = ["IBIS", "OIS", "Digital"];
 
 export default function FilterPanel({ filters, onChange }: FilterPanelProps) {
-  const history = useHistory();
-  const location = useLocation();
   const [localFilters, setLocalFilters] = useState<ProductInquiry>(filters);
 
   useEffect(() => {
@@ -29,13 +26,6 @@ export default function FilterPanel({ filters, onChange }: FilterPanelProps) {
 
   const applyFilters = () => {
     onChange(localFilters);
-    const params = new URLSearchParams();
-    Object.entries(localFilters).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
-        params.set(key, String(value));
-      }
-    });
-    history.push({ pathname: location.pathname, search: params.toString() });
   };
 
   const clearFilters = () => {
@@ -46,7 +36,6 @@ export default function FilterPanel({ filters, onChange }: FilterPanelProps) {
     };
     setLocalFilters(cleared);
     onChange(cleared);
-    history.push({ pathname: location.pathname, search: "" });
   };
 
   return (

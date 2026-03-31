@@ -1,9 +1,6 @@
 import { Box, Container, Stack } from "@mui/material";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import TelegramIcon from "@mui/icons-material/Telegram";
-import YouTubeIcon from "@mui/icons-material/YouTube";
 import { Settings } from "./Settings";
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useGlobals } from "../../hooks/useGlobals";
 import { getMediaUrl } from "../../../lib/config";
@@ -29,9 +26,14 @@ export default function UserPage() {
       ? "ADMIN"
       : authMember?.memberType || "";
 
-  if (!authMember) {
-    history.push("/");
-  }
+  useEffect(() => {
+    if (!authMember) {
+      history.push("/");
+    }
+  }, [authMember, history]);
+
+  if (!authMember) return null;
+
   return (
     <div className={"user-page"}>
       <div

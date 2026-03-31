@@ -1,16 +1,11 @@
-
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { GlobalContext } from "../hooks/useGlobals";
 import Cookies from "universal-cookie";
 import { Member } from "../../lib/types/member";
 import axios from "../../api/axios";
 
-
-
 const ContextProvider: React.FC <{ children: ReactNode }> = ({ children })  => {
-  const cookies = new Cookies();
-  if (!cookies.get("accessToken")) localStorage.removeItem("memberData");
-  
+  const cookies = useMemo(() => new Cookies(), []);
   const [authMember, setAuthMember] = useState<Member | null>(() => {
     try {
       const raw = localStorage.getItem("memberData");
@@ -26,7 +21,13 @@ const ContextProvider: React.FC <{ children: ReactNode }> = ({ children })  => {
     }
   });
   const [orderBuilder, setOrderBuilder] = useState<Date>(new Date());
-  console.log("authMember:", authMember);
+
+  useEffect(() => {
+    if (!cookies.get("accessToken")) {
+      localStorage.removeItem("memberData");
+      setAuthMember(null);
+    }
+  }, [cookies]);
 
   // Auto-fetch member detail if token cookie bor, lekin authMember null bo'lsa
   useEffect(() => {
@@ -35,12 +36,21 @@ const ContextProvider: React.FC <{ children: ReactNode }> = ({ children })  => {
       axios
         .get("/member/detail", { withCredentials: true })
         .then((res) => {
-          setAuthMember(res.data);
-          localStorage.setItem("memberData", JSON.stringify(res.data));
+          if (res.data) {
+            setAuthMember(res.data);
+            localStorage.setItem("memberData", JSON.stringify(res.data));
+            return;
+          }
+          cookies.remove("accessToken", { path: "/" });
+          localStorage.removeItem("memberData");
+          setAuthMember(null);
         })
         .catch((err) => {
-          console.error("Failed to fetch member detail:", err);
+          if (err?.response?.status === 401) {
+            cookies.remove("accessToken", { path: "/" });
+          }
           localStorage.removeItem("memberData");
+          setAuthMember(null);
         });
     }
   }, [authMember, cookies]);

@@ -38,11 +38,8 @@ class ProductService {
               (Array.isArray(data?.cameras) && data.cameras) ||
               (Array.isArray(data?.items) && data.items) ||
               [];
-
-            console.log("getProducts:", payload);
             return payload;
         } catch (err) {
-            console.log("Error getProduct:",err);
             throw err;
         }
      }
@@ -54,10 +51,8 @@ class ProductService {
 
             const data: any = result.data;
             const payload = data?.data ?? data?.product ?? data;
-            console.log("getProduct:", payload);
             return payload;
         } catch (err) {
-            console.log("Error getProduct:", err);
             throw err;
         }
      }
@@ -99,7 +94,6 @@ class ProductService {
            const result = await axios.post(url, input, { withCredentials: true });
            return (result.data as any)?.data ?? result.data;
        } catch (err) {
-           console.log("Error createProduct:", err);
            throw err;
        }
     }

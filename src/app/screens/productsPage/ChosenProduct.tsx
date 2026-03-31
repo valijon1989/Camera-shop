@@ -12,13 +12,12 @@ import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper";
 import { useDispatch, useSelector } from "react-redux";
 import { setRestaurant, setChosenProduct } from "./slice";
-import { Product } from "../../services/types/product";
 import { createSelector } from "reselect";
 import { retrieveChosenProduct, retrieveRestaurant } from "./selector";
 import { useParams } from "react-router-dom";
 import ProductService from "../../services/ProductService";
 import MemberService from "../../services/MemberService";
-import { getMediaUrl, mediaApi } from "../../../lib/config";
+import { getMediaUrl } from "../../../lib/config";
 import { CartItem } from "../../../lib/types/search";
 
 
@@ -78,18 +77,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
             className="swiper-area"
           >
             {imageList.map((ele: string, index: number) => {
-              const imagePath = (() => {
-                if (!ele) return "/icons/noimage-list.svg";
-                if (ele.startsWith("data:") || ele.startsWith("http")) return ele;
-                const cleaned = ele.replace(/^\/+/, "");
-                if (cleaned.toLowerCase().startsWith("uploads/")) {
-                  return `http://localhost:9090/${cleaned}`;
-                }
-                if (cleaned.includes("/")) {
-                  return `http://localhost:9090/uploads/${cleaned}`;
-                }
-                return `http://localhost:9090/uploads/products/${cleaned}`;
-              })();
+              const imagePath = getMediaUrl(ele) || "/icons/noimage-list.svg";
               return (
                 <SwiperSlide key={index}>
                   <img

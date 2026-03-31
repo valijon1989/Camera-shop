@@ -1,7 +1,9 @@
 import React, { createContext } from "react";
 import { io, Socket } from "socket.io-client";
+import { socketApi } from "../../lib/config";
 
-const socket = io(process.env.REACT_APP_API_URL as string, {
+const socket = io(socketApi, {
+  autoConnect: false,
   withCredentials: true,
 });
 export const SocketContext = createContext<Socket>(socket);

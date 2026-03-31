@@ -4,7 +4,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrieveFinishedOrders } from "./selector";
-import { mediaApi, serverApi, getMediaUrl } from "../../../lib/config";
+import { mediaApi, getMediaUrl } from "../../../lib/config";
 import { Order, OrderItem } from "../../../lib/types/order";
 import { Product } from "../../services/types/product";
 

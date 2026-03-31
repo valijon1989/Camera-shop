@@ -12,7 +12,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import "../../../css/help.css";
 import { faq } from "../../../lib/data/faq";
 import { terms } from "../../../lib/data/terms";
-import axios from "axios";
+import axios from "../../../api/axios";
 
 export default function HelpPage() {
   const [value, setValue] = React.useState("1");
@@ -33,7 +33,7 @@ export default function HelpPage() {
     e.preventDefault();
 
     axios
-      .post("http://localhost:9090/api/help", formData)
+      .post("/help", formData)
       .then((res) => {
         console.log("Help sent:", res.data);
         alert("Your message has been sent!");

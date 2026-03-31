@@ -13,6 +13,7 @@ import { retrieveNewDishes } from "./selector";
 import { Product } from "../../services/types/product";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import { useHistory } from "react-router-dom";
+import { getMediaUrl } from "../../../lib/config";
 
 
 /** REDUX SKICE & SELECTOR */
@@ -31,8 +32,6 @@ export default function NewDishes() {
   currency: "USD",
   maximumFractionDigits: 0,
  });
-
-     console.log("newDishes:", newDishes);
 
   return (
     <div className={"new-products-frame"}>
@@ -53,19 +52,7 @@ export default function NewDishes() {
                   (product as any).coverImage ||
                   (product as any).image ||
                   "";
-                const imagePath = (() => {
-                  if (!primaryImage) return "/icons/noimage-list.svg";
-                  if (primaryImage.startsWith("data:") || primaryImage.startsWith("http"))
-                    return primaryImage;
-                  const cleaned = primaryImage.replace(/^\/+/, "");
-                  if (cleaned.toLowerCase().startsWith("uploads/")) {
-                    return `http://localhost:9090/${cleaned}`;
-                  }
-                  if (cleaned.includes("/")) {
-                    return `http://localhost:9090/uploads/${cleaned}`;
-                  }
-                  return `http://localhost:9090/uploads/products/${cleaned}`;
-                })();
+                const imagePath = getMediaUrl(primaryImage) || "/icons/noimage-list.svg";
                 const availability =
                   product.stock && product.stock > 0
                     ? `${product.stock} in stock`

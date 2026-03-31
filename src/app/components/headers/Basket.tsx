@@ -61,7 +61,6 @@ const proceedOrderHandler = async () => {
 
 
   } catch (err) {
-    console.log(err);
     sweetErrorHandling(err).then();
   }
 }
@@ -80,7 +79,7 @@ const proceedOrderHandler = async () => {
         <Badge 
         badgeContent={cartItems.length} 
         color="secondary">
-          <img src={"/icons/shopping-cart.svg"} />
+          <img src={"/icons/shopping-cart.svg"} alt="Shopping cart" />
         </Badge>
       </IconButton>
       <Menu

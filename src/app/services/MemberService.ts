@@ -20,10 +20,8 @@ class MemberService {
       const payload = Array.isArray((result.data as any)?.data)
         ? (result.data as any).data
         : result.data;
-      console.log("result, result", payload);
       return payload as Member[];
     } catch (err) {
-      console.log("Error, getTopUsers", err);
       throw err;
     }
   }
@@ -32,19 +30,16 @@ class MemberService {
     try {
       const adminUrl = this.path + "member/admin";
       const result = await axios.get(adminUrl);
-      console.log("result", result);
 
       const platformAdmin: Member = result.data;
       return platformAdmin;
     } catch (err) {
-      console.log("Error, getRestaurant primary endpoint", err);
       try {
         const legacyUrl = this.path + "member/restaurant";
         const legacyResult = await axios.get(legacyUrl);
         const platformAdmin: Member = legacyResult.data;
         return platformAdmin;
       } catch (legacyErr) {
-        console.log("Error, getRestaurant legacy fallback", legacyErr);
         throw legacyErr;
       }
     }
@@ -55,13 +50,11 @@ class MemberService {
       const url = this.path + "member/signup";
       const result = await axios.post(url, input, { withCredentials: true });
       const member: Member = (result.data as any)?.member ?? result.data;
-      console.log("result.data signup", member);
 
       localStorage.setItem("memberData", JSON.stringify(member));
 
       return member;
     } catch (err) {
-      console.log("Error, signup", err);
       throw err;
     }
   }
@@ -71,13 +64,11 @@ class MemberService {
       const url = this.path + "member/login";
       const result = await axios.post(url, input, { withCredentials: true });
       const member: Member = (result.data as any)?.member ?? result.data;
-      console.log("login.login login", member);
 
       localStorage.setItem("memberData", JSON.stringify(member));
 
       return member;
     } catch (err) {
-      console.log("Error, login", err);
       throw err;
     }
   }
@@ -85,12 +76,10 @@ class MemberService {
   public async logout(): Promise<void> {
     try {
       const url = this.path + "member/logout";
-      const result = await axios.post(url, {}, { withCredentials: true });
-      console.log("logout.logout", result);
+      await axios.post(url, {}, { withCredentials: true });
 
       localStorage.removeItem("memberData");
     } catch (err) {
-      console.log("Error, logout", err);
       throw err;
     }
   }
@@ -114,13 +103,11 @@ class MemberService {
           "Content-type": "multipart/form-data",
         },
       });
-      console.log("updateMember", result);
 
       const member: Member = result.data;
       localStorage.setItem("memebrData", JSON.stringify(member));
       return member;
     } catch (err) {
-      console.log("Error, logout", err);
       throw err;
     }
   }

@@ -42,11 +42,8 @@ export default function HomePage() {
         limit: 4,
         order: "views",
       })
-      .then((data) => {
-        console.log("data passed here:", data);
-        setPopularDishes(data);
-      })
-      .catch((err) => console.log(err));
+      .then((data) => setPopularDishes(data))
+      .catch(() => setPopularDishes([]));
 
     product
       .getProducts({
@@ -55,13 +52,13 @@ export default function HomePage() {
         order: "createdAt",
       })
       .then((data) => setNewDishes(data))
-      .catch((err) => console.log(err));
+      .catch(() => setNewDishes([]));
 
     const member = new MemberService();
     member
       .getTopUsers()
       .then((data) => setTopUsers(data))
-      .catch((err) => console.log(err));
+      .catch(() => setTopUsers([]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

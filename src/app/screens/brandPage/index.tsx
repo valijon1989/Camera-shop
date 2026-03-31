@@ -5,6 +5,7 @@ import ProductService from "../../services/ProductService";
 import { Product, ProductInquiry } from "../../services/types/product";
 import "../../../css/products.css";
 import { cameraBrandData } from "../../data/brands";
+import { getMediaUrl } from "../../../lib/config";
 
 export default function BrandPage() {
   const { brandName } = useParams<{ brandName: string }>();
@@ -71,19 +72,7 @@ export default function BrandPage() {
             {products.length ? (
               products.map((product: Product) => {
                 const primaryImage = product.images?.[0];
-                const imagePath = (() => {
-                  if (!primaryImage) return "/icons/noimage-list.svg";
-                  if (primaryImage.startsWith("data:") || primaryImage.startsWith("http"))
-                    return primaryImage;
-                  const cleaned = primaryImage.replace(/^\/+/, "");
-                  if (cleaned.toLowerCase().startsWith("uploads/")) {
-                    return `http://localhost:9090/${cleaned}`;
-                  }
-                  if (cleaned.includes("/")) {
-                    return `http://localhost:9090/uploads/${cleaned}`;
-                  }
-                  return `http://localhost:9090/uploads/products/${cleaned}`;
-                })();
+                const imagePath = getMediaUrl(primaryImage) || "/icons/noimage-list.svg";
                 return (
                   <Stack
                     key={product._id}

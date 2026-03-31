@@ -101,7 +101,6 @@ const handleSignupRequest = async () => {
        setAuthMember(result);
        handleSignupClose();
      } catch (err) {
-      console.log("Error, signup:", err);
       handleSignupClose();
       sweetErrorHandling(err).then();
      }
@@ -109,7 +108,6 @@ const handleSignupRequest = async () => {
 
   const handleLoginRequest = async () => {
     try {
-      console.log("inputs:", memberNick, memberPassword);
       const isFulfill =
       memberNick !== "" &&
       memberPassword !== "";
@@ -126,7 +124,6 @@ const handleSignupRequest = async () => {
       setAuthMember(result);
       handleLoginClose();
     } catch (err) {
-      console.log("Error, login:", err);
       handleLoginClose();
       sweetErrorHandling(err).then();
     }

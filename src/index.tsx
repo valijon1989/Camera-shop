@@ -10,16 +10,13 @@ import theme from "./app/MaterialTheme";
 import "./css/index.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import AppProviders from "./app/context/AppProviders";
-import ContextProvider from "./app/context/ContextProvider";  
 import { SocketProvider } from "./app/context/SocketContext";
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
   <Provider store={store}>
     <AppProviders>
-      <ContextProvider>
         <SocketProvider >
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -28,10 +25,8 @@ root.render(
           </Router>
         </ThemeProvider>
         </SocketProvider>
-      </ContextProvider>
     </AppProviders>
   </Provider>,
-  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

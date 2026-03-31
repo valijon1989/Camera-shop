@@ -3,18 +3,107 @@
     "_id": "demo-1",
     "cameraModel": "Sony A7 IV",
     "brand": "Sony",
+    "category": "mirrorless",
     "price": 2500,
-    "images": ["uploads/demo-sony.jpg"],
+    "images": [
+      "/img/sony-camera-product.jpg"
+    ],
     "stock": 5,
+    "description": "33MP full-frame hybrid camera with strong autofocus and 4K video.",
+    "views": 284,
     "createdAt": "2025-12-02T00:00:00.000Z"
   },
   {
     "_id": "demo-2",
     "cameraModel": "Canon R50",
     "brand": "Canon",
+    "category": "mirrorless",
     "price": 700,
-    "images": ["uploads/demo-canon.jpg"],
+    "images": [
+      "/img/canon-camera-product.jpg"
+    ],
     "stock": 10,
+    "description": "Compact APS-C mirrorless camera for everyday creators and new shooters.",
+    "views": 173,
     "createdAt": "2025-12-02T00:00:00.000Z"
+  },
+  {
+    "_id": "demo-3",
+    "cameraModel": "Nikon Z9",
+    "brand": "Nikon",
+    "category": "dslr",
+    "price": 5499,
+    "images": [
+      "/img/nikon-z9-product.jpg"
+    ],
+    "stock": 3,
+    "description": "Flagship body with rugged build and pro-level autofocus for sports and wildlife.",
+    "views": 331,
+    "createdAt": "2025-12-04T00:00:00.000Z"
+  },
+  {
+    "_id": "demo-4",
+    "cameraModel": "Lumix 24-70 Pro",
+    "brand": "Panasonic",
+    "category": "lens",
+    "price": 1299,
+    "images": [
+      "/img/panasonic-lumix-product.jpg"
+    ],
+    "stock": 6,
+    "description": "Fast standard zoom lens built for hybrid creators and everyday professional work.",
+    "views": 142,
+    "createdAt": "2025-12-05T00:00:00.000Z"
+  },
+  {
+    "_id": "demo-5",
+    "cameraModel": "Mavic 3 Pro",
+    "brand": "DJI",
+    "category": "drone",
+    "price": 2199,
+    "images": [
+      "/img/dji-mavic3pro.jpg"
+    ],
+    "stock": 4,
+    "description": "Triple-camera drone system for cinematic aerial footage and commercial shoots.",
+    "views": 198,
+    "createdAt": "2025-12-06T00:00:00.000Z"
+  },
+  {
+    "_id": "demo-6",
+    "cameraModel": "Creator Rig Kit",
+    "brand": "Sony",
+    "category": "accessory",
+    "price": 349,
+    "images": [
+      "/img/camera-deal.svg"
+    ],
+    "stock": 11,
+    "description": "Accessory bundle with cage, handle, audio mount and quick-release support.",
+    "views": 89,
+    "createdAt": "2025-12-07T00:00:00.000Z"
+  },
+  {
+    "_id": "1774933092482-94xr03",
+    "cameraModel": "canon r6",
+    "brand": "Canon",
+    "category": "mirrorless",
+    "sensorType": "ef2e3e",
+    "mountType": "canonio",
+    "videoResolution": "",
+    "isoRange": "",
+    "stabilization": "",
+    "price": 1200,
+    "stock": 0,
+    "description": "",
+    "condition": "",
+    "location": "",
+    "images": [
+      "uploads/1774933092481-ceff9ceb-5315-4b59-b9a9-98c030e97bc2.jpg",
+      "uploads/1774933092481-1b972540-3ad8-43f9-80cf-34663f0aecb1.webp",
+      "uploads/1774933092481-e00ad12b-3459-4a3d-b2cf-652e0bf4cdda.png"
+    ],
+    "views": 0,
+    "createdAt": "2026-03-31T04:58:12.482Z"
   }
 ]

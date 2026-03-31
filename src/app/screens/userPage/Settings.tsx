@@ -67,14 +67,13 @@ export function Settings() {
       setAuthMember(result);
       await sweetTopSuccessAlert("Modified successfully", 1000);
     } catch (err) {
-      console.log(err);
       sweetErrorHandling(err).then();
     }
   };
 
   const handleImageViewer = (e: T) => {
-    const file = e.target.files[0];
-    console.log("usha fayl, ", file);
+    const file = e.target.files?.[0];
+    if (!file) return;
     const fileType = file.type;
     const validateImageTypes = ["image/jpg", "image/jpeg", "image/png"];
 
@@ -92,14 +91,14 @@ export function Settings() {
   return (
     <Box className={"settings"}>
       <Box className={"member-media-frame"}>
-        <img src={memberImage} className={"mb-image"} />
+        <img src={memberImage} className={"mb-image"} alt="Member profile" />
         <div className={"media-change-box"}>
           <span>Upload image</span>
           <p>JPG, JPEG, PNG formats only!</p>
           <div className={"up-del-box"}>
-            <Button component="label" onChange={handleImageViewer}>
+            <Button component="label">
               <CloudDownloadIcon />
-              <input type="file" hidden />
+              <input type="file" hidden onChange={handleImageViewer} />
             </Button>
           </div>
         </div>
