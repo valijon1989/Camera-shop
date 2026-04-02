@@ -3,6 +3,7 @@ import { GlobalContext } from "../hooks/useGlobals";
 import Cookies from "universal-cookie";
 import { Member } from "../../lib/types/member";
 import axios from "../../api/axios";
+import { getApiUrl } from "../../lib/config";
 
 const ContextProvider: React.FC <{ children: ReactNode }> = ({ children })  => {
   const cookies = useMemo(() => new Cookies(), []);
@@ -34,7 +35,7 @@ const ContextProvider: React.FC <{ children: ReactNode }> = ({ children })  => {
     const token = cookies.get("accessToken");
     if (token && !authMember) {
       axios
-        .get("/member/detail", { withCredentials: true })
+        .get(getApiUrl("member/detail"), { withCredentials: true })
         .then((res) => {
           if (res.data) {
             setAuthMember(res.data);

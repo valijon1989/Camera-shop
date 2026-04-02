@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { cameraBrandData, cameraBrands, CameraBrandAsset } from "../../data/brands";
 import "../../../css/products.css";
 import axios from "../../../api/axios";
-import { getMediaUrl, mediaApi } from "../../../lib/config";
+import { getApiUrl, getMediaUrl, mediaApi } from "../../../lib/config";
 
 export default function BrandList() {
   const history = useHistory();
@@ -23,7 +23,7 @@ export default function BrandList() {
 
   useEffect(() => {
     axios
-      .get("/brands?rich=true")
+      .get(getApiUrl("brands"), { params: { rich: true } })
       .then((res) => {
         const list: CameraBrandAsset[] = Array.isArray(res.data?.data)
           ? res.data.data

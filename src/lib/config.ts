@@ -1,11 +1,16 @@
-const rawApiUrl = process.env.REACT_APP_API_URL || "http://localhost:9091/api";
-const trimmedApiUrl = rawApiUrl.endsWith("/")
-  ? rawApiUrl.slice(0, -1)
-  : rawApiUrl;
+const DEFAULT_API_BASE = "http://187.77.147.162:9091/api";
+const rawApiUrl = (process.env.REACT_APP_API_URL || DEFAULT_API_BASE).trim();
 
-export const serverApi: string = trimmedApiUrl.endsWith("/api")
-  ? trimmedApiUrl
-  : `${trimmedApiUrl}/api`;
+const trimTrailingSlash = (value: string) =>
+  value.endsWith("/") ? value.slice(0, -1) : value;
+
+const normalizeApiBase = (value: string) => {
+  const trimmedValue = trimTrailingSlash(value);
+  if (!trimmedValue) return DEFAULT_API_BASE;
+  return trimmedValue.endsWith("/api") ? trimmedValue : `${trimmedValue}/api`;
+};
+
+export const serverApi: string = normalizeApiBase(rawApiUrl);
 export const mediaApi: string = serverApi.replace(/\/api$/, "");
 export const socketApi: string = mediaApi;
 

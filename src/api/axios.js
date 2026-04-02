@@ -1,13 +1,27 @@
 import axios from "axios";
+import { getApiUrl, serverApi } from "../lib/config";
 
-const rawApiUrl = process.env.REACT_APP_API_URL || "http://localhost:9091/api";
-const trimmedApiUrl = rawApiUrl.endsWith("/")
-  ? rawApiUrl.slice(0, -1)
-  : rawApiUrl;
-const hasApiSuffix = trimmedApiUrl.endsWith("/api");
-const base = hasApiSuffix ? trimmedApiUrl : `${trimmedApiUrl}/api`;
+const apiClient = axios.create({
+  baseURL: serverApi,
+  withCredentials: true,
+});
 
-axios.defaults.baseURL = base;
-axios.defaults.withCredentials = true;
+apiClient.interceptors.request.use((config) => {
+  const url = typeof config.url === "string" ? config.url.trim() : "";
+  const isAbsoluteUrl = /^https?:\/\//.test(url);
 
-export default axios;
+  if (isAbsoluteUrl) {
+    return config;
+  }
+
+  const normalizedPath =
+    !url || url === "/" || url === "api" || url === "/api"
+      ? "health"
+      : url.replace(/^\/+/, "");
+
+  config.baseURL = undefined;
+  config.url = getApiUrl(normalizedPath);
+  return config;
+});
+
+export default apiClient;

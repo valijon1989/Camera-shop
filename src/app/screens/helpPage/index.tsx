@@ -13,6 +13,7 @@ import "../../../css/help.css";
 import { faq } from "../../../lib/data/faq";
 import { terms } from "../../../lib/data/terms";
 import axios from "../../../api/axios";
+import { getApiUrl } from "../../../lib/config";
 
 export default function HelpPage() {
   const [value, setValue] = React.useState("1");
@@ -33,7 +34,7 @@ export default function HelpPage() {
     e.preventDefault();
 
     axios
-      .post("/help", formData)
+      .post(getApiUrl("help"), formData)
       .then((res) => {
         console.log("Help sent:", res.data);
         alert("Your message has been sent!");

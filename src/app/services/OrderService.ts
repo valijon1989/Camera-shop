@@ -1,16 +1,10 @@
-import { serverApi } from "../../lib/config";
-import axios from "axios";
+import axios from "../../api/axios";
+import { getApiUrl } from "../../lib/config";
 import { CartItem } from "../../lib/types/search";
 import { Order, OrderInquiry, OrderItemInput, OrderUpdateInput } from "../../lib/types/order";
 
 
 class OrderService {
-    private readonly path: string;
-    constructor() {
-        this.path = serverApi;
-    }
-
-
     public async createOrder(input: CartItem[]): Promise<Order> {
         try {
             const orderItems: OrderItemInput[] = input.map((cartItem: CartItem) => {
@@ -20,8 +14,9 @@ class OrderService {
                     productId: cartItem._id
                 };
             });
-            const url = `${this.path}/order/create`;
-            const result = await axios.post(url, orderItems, {withCredentials: true});
+            const result = await axios.post(getApiUrl("order/create"), orderItems, {
+              withCredentials: true,
+            });
 
             return result.data;
         } catch (err) {
@@ -32,11 +27,14 @@ class OrderService {
 
      public async getMyOrders(input: OrderInquiry): Promise<Order[]> {
         try {
-            // axios.defaults.withCredentials = true;
-            const url = `${this.path}/order/all`;
-            const query = `?page=${input.page}&limit=${input.limit}&orderStatus=${input.orderStatus}`;
-
-            const result = await axios.get(url + query, {withCredentials: true});
+            const result = await axios.get(getApiUrl("order/all"), {
+              withCredentials: true,
+              params: {
+                page: input.page,
+                limit: input.limit,
+                orderStatus: input.orderStatus,
+              },
+            });
 
             return result.data;
         } catch (err) {
@@ -46,8 +44,9 @@ class OrderService {
 
      public async updateOrder(input: OrderUpdateInput): Promise<Order> {
         try {
-            const url = `${this.path}/order/update`;
-            const result = await axios.post(url, input, {withCredentials: true});
+            const result = await axios.post(getApiUrl("order/update"), input, {
+              withCredentials: true,
+            });
 
             return result.data;
         } catch (err) {

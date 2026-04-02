@@ -6,17 +6,15 @@ import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch }  from "@reduxjs/toolkit";
 import { setProducts } from "./slice";
 import { Product, ProductInquiry } from "../../services/types/product";
-import { createSelector } from "reselect";
-import { retrieveProducts } from "./selector";
-import ProductService from "../../services/ProductService";
 import { useHistory, useLocation } from "react-router-dom";
 import "../../../css/products.css";
 import FilterPanel from "../../components/filters/FilterPanel";
-import { getMediaUrl } from "../../../lib/config";
+import { getApiUrl, getMediaUrl } from "../../../lib/config";
+import axios from "../../../api/axios";
 
 const parseProductSearch = (search: string): ProductInquiry => {
   const params = new URLSearchParams(search);
@@ -48,18 +46,20 @@ const serializeProductSearch = (input: ProductInquiry) => {
   return params.toString();
 };
 
-
-/** REDUX SKICE & SELECTOR */
-const productsRetriever = createSelector(retrieveProducts,(products) => ({
-   products,
-   }));
-
+const extractProducts = (payload: any): Product[] => {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.data)) return payload.data;
+  if (Array.isArray(payload?.products)) return payload.products;
+  if (Array.isArray(payload?.cameras)) return payload.cameras;
+  if (Array.isArray(payload?.items)) return payload.items;
+  return [];
+};
 
 export default function Products() {
   const dispatch: Dispatch = useDispatch();
-  const { products } = useSelector(productsRetriever);
   const history = useHistory();
   const location = useLocation();
+  const [cameras, setCameras] = useState<Product[]>([]);
 
   const [productSearch, setProductSearch] = useState<ProductInquiry>(() =>
     parseProductSearch(location.search)
@@ -84,15 +84,27 @@ export default function Products() {
   }, [location.search, productSearchKey]);
 
   useEffect(() => {
-      const product = new ProductService();
-      product
-        .getProducts(productSearch)
-        .then((data) => {
+      let isMounted = true;
+
+      axios
+        .get(getApiUrl("cameras"), {
+          params: productSearch,
+        })
+        .then((response) => {
+          if (!isMounted) return;
+          const data = extractProducts(response.data);
+          setCameras(data);
           dispatch(setProducts(data));
         })
         .catch(() => {
+          if (!isMounted) return;
+          setCameras([]);
           dispatch(setProducts([]));
         });
+
+      return () => {
+        isMounted = false;
+      };
     }, [productSearch, dispatch]);
 
   useEffect(() => {
@@ -240,8 +252,8 @@ export default function Products() {
                 flexWrap="wrap"
                 justifyContent="center"
               >
-                {products.length !== 0 ? (
-                  products.map((product: Product, idx: number) => {
+                {cameras.length !== 0 ? (
+                  cameras.map((product: Product, idx: number) => {
                     const firstImage = product.images?.[0];
                     const imageSrc = getMediaUrl(firstImage) || "/icons/noimage-list.svg";
                     return (
@@ -277,7 +289,7 @@ export default function Products() {
             <Stack className={"pagination-title"} alignItems={"center"}>
               {productSearch.page && (
               <Pagination
-                count={(productSearch.page || 1) + (products.length === productSearch.limit ? 1 : 0)}
+                count={(productSearch.page || 1) + (cameras.length === productSearch.limit ? 1 : 0)}
                 page={productSearch.page || 1}
                 renderItem={(item) => (
                   <PaginationItem

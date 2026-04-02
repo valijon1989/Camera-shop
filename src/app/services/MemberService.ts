@@ -1,4 +1,5 @@
 import axios from "../../api/axios";
+import { getApiUrl } from "../../lib/config";
 import {
   LoginInput,
   Member,
@@ -7,16 +8,9 @@ import {
 } from "../../lib/types/member";
 
 class MemberService {
-  private readonly path: string;
-
-  constructor() {
-    this.path = ""; // axios baseURL handles host
-  }
-
   public async getTopUsers(): Promise<Member[]> {
     try {
-      let url = this.path + "member/top-users";
-      const result = await axios.get(url);
+      const result = await axios.get(getApiUrl("member/top-users"));
       const payload = Array.isArray((result.data as any)?.data)
         ? (result.data as any).data
         : result.data;
@@ -28,15 +22,13 @@ class MemberService {
 
   public async getRestaurant(): Promise<Member> {
     try {
-      const adminUrl = this.path + "member/admin";
-      const result = await axios.get(adminUrl);
+      const result = await axios.get(getApiUrl("member/admin"));
 
       const platformAdmin: Member = result.data;
       return platformAdmin;
     } catch (err) {
       try {
-        const legacyUrl = this.path + "member/restaurant";
-        const legacyResult = await axios.get(legacyUrl);
+        const legacyResult = await axios.get(getApiUrl("member/restaurant"));
         const platformAdmin: Member = legacyResult.data;
         return platformAdmin;
       } catch (legacyErr) {
@@ -47,8 +39,9 @@ class MemberService {
 
   public async signup(input: MemberInput): Promise<Member> {
     try {
-      const url = this.path + "member/signup";
-      const result = await axios.post(url, input, { withCredentials: true });
+      const result = await axios.post(getApiUrl("member/signup"), input, {
+        withCredentials: true,
+      });
       const member: Member = (result.data as any)?.member ?? result.data;
 
       localStorage.setItem("memberData", JSON.stringify(member));
@@ -61,8 +54,9 @@ class MemberService {
 
   public async login(input: LoginInput): Promise<Member> {
     try {
-      const url = this.path + "member/login";
-      const result = await axios.post(url, input, { withCredentials: true });
+      const result = await axios.post(getApiUrl("member/login"), input, {
+        withCredentials: true,
+      });
       const member: Member = (result.data as any)?.member ?? result.data;
 
       localStorage.setItem("memberData", JSON.stringify(member));
@@ -75,8 +69,7 @@ class MemberService {
 
   public async logout(): Promise<void> {
     try {
-      const url = this.path + "member/logout";
-      await axios.post(url, {}, { withCredentials: true });
+      await axios.post(getApiUrl("member/logout"), {}, { withCredentials: true });
 
       localStorage.removeItem("memberData");
     } catch (err) {
@@ -93,9 +86,7 @@ class MemberService {
       formData.append("memberDesc", input.memberDesc || "");
       formData.append("memberImage", input.memberImage || "");
 
-      const url = this.path + "member/update";
-
-      const result = await axios(url, {
+      const result = await axios(getApiUrl("member/update"), {
         method: "POST",
         data: formData,
         withCredentials: true,
